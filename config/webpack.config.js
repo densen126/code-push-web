@@ -4,11 +4,14 @@ import AssetsPlugin from 'assets-webpack-plugin';
 import nodeExternals from 'webpack-node-externals';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
+import { port } from './config';
 import pkg from './../package.json';
 
 const isDebug = !process.argv.includes('--release');
+const isVerbose = process.argv.includes('--verbose');
 const isAnalyse = process.argv.includes('--analyse') || process.argv.includes('--analyze');
-const analyzerPort = 3003;
+const webpackPort = parseInt(process.env.PORT || port, 10);
+const analyzerPort = webpackPort + 3;
 const rootdir = path.resolve(__dirname, '../src');
 
 const common = {
@@ -104,10 +107,51 @@ const clientConfig = merge(common, {
     target: 'web',
     entry: path.resolve('src/client.tsx'),
     output: {
-        ...config.output,
+        ...common.output,
         filename: isDebug ? 'main.js' : 'main.[contenthash:8].js',
         chunkFilename: isDebug ? '[name].chunk.js' : '[name].[contenthash:8].chunk.js'
     },
+    // devServer: {
+    //     devMiddleware: {
+    //         writeToDisk: isDebug,
+    //     },
+    // },
+    // optimization: isDebug ? {
+    //     minimize: false,
+    //     splitChunks: false,
+    //     runtimeChunk: false,
+    // } : {
+    //     splitChunks: {
+    //         chunks: 'all',
+    //         cacheGroups: {
+    //             vendor: {
+    //                 test: /[\\/]node_modules[\\/]/,
+    //                 name: 'vendor',
+    //                 chunks: 'all',
+    //                 priority: -10,
+    //             },
+    //             default: {
+    //                 minChunks: 2,
+    //                 priority: -20,
+    //                 reuseExistingChunk: true,
+    //             },
+    //         },
+    //     },
+    //     minimize: true,
+    //     minimizer: [
+    //         new TerserPlugin({
+    //             terserOptions: {
+    //                 compress: {
+    //                     drop_console: true,
+    //                 },
+    //                 output: {
+    //                     comments: false,
+    //                 },
+    //             },
+    //             extractComments: false,
+    //         }),
+    //     ],
+    // },
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(isDebug ? 'development' : 'production'),
@@ -138,16 +182,16 @@ const serverConfig = merge(common, {
     target: 'node',
     entry: path.resolve('src/server.tsx'),
     output: {
-        ...config.output,
+        ...common.output,
         filename: 'server.js',
         libraryTarget: 'commonjs2',
     },
     externals: [
         nodeExternals(),
         /^\.\/assets\.json$/,
-        (context, request, callback) => {
+        ({ context, request }, callback) => {
             const isExternal = request.match(/^[@a-z][a-z/\.\-0-9]*$/i) && !request.match(/\.(css|less|scss|sss)$/i);
-            callback(null, Boolean(isExternal));
+            callback(null, Boolean(isExternal));  // Use callback to signal whether the module is external
         },
     ],
     plugins: [

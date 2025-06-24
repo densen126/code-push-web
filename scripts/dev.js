@@ -1,22 +1,17 @@
 // start.js
+import open from 'open';
+import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
-import path from 'path';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import { spawn } from 'child_process';
-import fs from "fs"
-
-import { readdirSync } from 'fs';
-import { pathToFileURL } from 'url';
-import http from 'http';
-
-
 import webpackConfig from './../config/webpack.config.js';
+import { local_host, port } from './../config/config.js'
 
 let server;
 const [clientConfig, serverConfig] = webpackConfig;
+const serverPath = path.join(serverConfig.output.path, serverConfig.output.filename);
 
 clientConfig.entry = [
     'webpack-hot-middleware/client?reload=true&timeout=3000',
@@ -26,6 +21,8 @@ clientConfig.entry = [
 const babelRule = clientConfig.module.rules.find(
     (rule) => rule.loader === 'babel-loader'
 );
+
+console.log(serverPath)
 
 if (babelRule) {
     babelRule.options = babelRule.options || {};
@@ -59,7 +56,7 @@ async function createApp() {
     );
     app.use(webpackHotMiddleware(clientCompiler));
 
-    const mod = await import("./../build/server.js");
+    const mod = await import(serverPath);
     let ssrApp = mod.default || mod;
 
     app.use((req, res, next) => {
@@ -85,8 +82,8 @@ async function restartServer() {
 
 async function startServer() {
   const app = await createApp();
-  server = app.listen(3000, () => {
-    console.log('[server] Listening on port 3000');
+  server = app.listen(port, () => {
+    console.log(`[server] Listening on port ${port}`);
   });
 }
 
@@ -99,6 +96,7 @@ serverCompiler.hooks.done.tap('RestartServerPlugin', async () => {
         await restartServer();
     } else {
         await startServer();
+        await open(`http://${local_host}:${port}`);
     }
 });
 
