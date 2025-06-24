@@ -10,7 +10,6 @@ import fs from "fs"
 
 import { readdirSync } from 'fs';
 import { pathToFileURL } from 'url';
-import path from 'path';
 import http from 'http';
 
 

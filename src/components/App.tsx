@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import routes from './../routes';
 
 interface AppProps {
-  currentPath?: ReactNode;
+  currentPath?: string;
 }
 
 const App: React.FC<AppProps> = ({ currentPath }) => {

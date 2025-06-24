@@ -11,7 +11,7 @@ const Html: React.FC<HtmlProps> = ({ children, title = 'SSR App', currentPath = 
         <head>
             <meta charSet="utf-8" />
             <title>{title}</title>
-            <script defer src="/public/main.js"></script>
+            <script defer src="/public/assets/main.js"></script>
         </head>
         <body>
             <div id="root" dangerouslySetInnerHTML={{ __html: typeof children === 'string' ? children : '' }} />

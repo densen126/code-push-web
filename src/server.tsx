@@ -8,7 +8,7 @@ import routes from 'routes';
 const app = express();
 const port = 3000;
 
-app.use('/public', express.static('build/public'));
+app.use('/assets', express.static('/build/public/assets'));
 
 app.get('/', (req, res) => {
     const path = req.path;
