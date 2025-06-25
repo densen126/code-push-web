@@ -2,6 +2,7 @@
     "name": "code-push-web",
     "version": "1.0.0",
     "private": true,
+    "license": "MIT",
     "scripts": {
         "dev": "ts-node -r tsconfig-paths/register scripts/dev",
         "build": "ts-node -r tsconfig-paths/register scripts/build",
