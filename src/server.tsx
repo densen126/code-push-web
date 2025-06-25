@@ -11,13 +11,13 @@ const app = express();
 app.use('/assets', express.static(path.resolve(__dirname)));
 
 app.get('/', (req, res) => {
-    const path = req.path;
-    const content = ReactDOMServer.renderToString(<App currentPath={path} />);
+    const currentPath = req.path;
+    const content = ReactDOMServer.renderToString(<App currentPath={currentPath} />);
     const html = ReactDOMServer.renderToStaticMarkup(
         // <Html>
         //   <div id="root" dangerouslySetInnerHTML={{ __html: content }} />
         // </Html>
-        <Html title={'Untitled'} currentPath={path}>
+        <Html title={'Untitled'} currentPath={currentPath}>
             {content}
         </Html>
     );
