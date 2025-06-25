@@ -6,6 +6,7 @@
         "dev": "ts-node -r tsconfig-paths/register scripts/dev",
         "build": "ts-node -r tsconfig-paths/register scripts/build",
         "start": "ts-node -r tsconfig-paths/register scripts/runServer",
+        "postinstall": "patch-package",
         "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
         "clean": "npm dedupe"
     },
@@ -41,6 +42,7 @@
         "@babel/preset-react": "7.24.1",
         "@babel/preset-typescript": "^7.27.1",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.6.0",
+        "@types/express": "^5.0.3",
         "@types/node": "^24.0.1",
         "@types/react-dom": "^18.2.0",
         "@types/webpack-hot-middleware": "^2.25.9",
@@ -54,6 +56,7 @@
         "css-loader": "^6.10.0",
         "eslint": "^9.29.0",
         "isomorphic-style-loader": "^5.4.0",
+        "patch-package": "^8.0.0",
         "pixrem": "^5.0.0",
         "postcss": "^8.5.5",
         "postcss-calc": "^10.1.1",

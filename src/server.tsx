@@ -10,7 +10,7 @@ const app = express();
 // Serve static assets from the build output directory
 app.use('/assets', express.static(path.resolve(__dirname)));
 
-app.get('/', (req, res) => {
+app.get('/', (req: { path: any; }, res: { send: (arg0: string) => void; }) => {
     const currentPath = req.path;
     const content = ReactDOMServer.renderToString(<App currentPath={currentPath} />);
     const html = ReactDOMServer.renderToStaticMarkup(
