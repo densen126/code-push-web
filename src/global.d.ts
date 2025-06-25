@@ -1,0 +1,16 @@
+declare module '*.css';
+declare module '*.json';
+declare module 'cookie-parser';
+declare module 'pretty-error';
+declare module 'universal-router';
+declare module 'query-string';
+declare module 'history';
+declare module 'redux-logger';
+declare module 'isomorphic-style-loader/withStyles';
+declare module 'chai';
+declare module 'enzyme';
+declare module 'redux-mock-store';
+declare module 'draft-js';
+declare module 'validator';
+declare module 'uuid';
+declare module 'bluebird';

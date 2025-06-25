@@ -19,9 +19,14 @@ async function build() {
             compiler.close((closeErr) => {
                 if (closeErr) {
                     reject(closeErr);
-                } else {
-                    resolve();
+                    return;
                 }
+                const srcFile = path.resolve('build/assets.json');
+                const destFile = path.resolve('build/public/assets/assets.json');
+                if (fs.existsSync(srcFile)) {
+                    fs.copyFileSync(srcFile, destFile);
+                }
+                resolve();
             });
         });
     });

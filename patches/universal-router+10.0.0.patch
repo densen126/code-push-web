@@ -1,0 +1,13 @@
+diff --git a/node_modules/universal-router/package.json b/node_modules/universal-router/package.json
+index 5195866..11f9920 100644
+--- a/node_modules/universal-router/package.json
++++ b/node_modules/universal-router/package.json
+@@ -19,7 +19,7 @@
+     "Vladimir Kutepov"
+   ],
+   "sideEffects": false,
+-  "type": "module",
++  "type": "commonjs",
+   "exports": {
+     ".": {
+       "types": "./universal-router.d.ts",

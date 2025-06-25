@@ -66,7 +66,9 @@ const common = {
                     {
                         loader: 'postcss-loader',
                         options: {
-                            config: './postcss.config.js',
+                            postcssOptions: {
+                                config: path.resolve(__dirname, 'postcss.config.js'),
+                            },
                         },
                     }
                 ],
