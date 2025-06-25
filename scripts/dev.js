@@ -1,15 +1,16 @@
 // start.js
-import open from 'open';
 import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import BrowserSyncPlugin from 'browser-sync-webpack-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import webpackConfig from './../config/webpack.config.js';
 import { local_host, port } from './../config/config.js'
 
 let server;
+let isServerStarted = false;
 const [clientConfig, serverConfig] = webpackConfig;
 const serverPath = path.join(serverConfig.output.path, serverConfig.output.filename);
 
@@ -22,8 +23,6 @@ const babelRule = clientConfig.module.rules.find(
     (rule) => rule.loader === 'babel-loader'
 );
 
-console.log(serverPath)
-
 if (babelRule) {
     babelRule.options = babelRule.options || {};
     babelRule.options.plugins = [
@@ -33,7 +32,14 @@ if (babelRule) {
 }
 
 // 添加 HMR 插件
-clientConfig.plugins = []
+clientConfig.plugins = [];
+clientConfig.plugins.push(new BrowserSyncPlugin({
+    host: local_host,
+    port: port,
+    proxy: `http://${local_host}:${port}`,
+    files: ['build/**/*.*'],
+    open: true,
+}));
 clientConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 clientConfig.plugins.push(new ReactRefreshWebpackPlugin({ overlay: false }));
 
@@ -43,7 +49,6 @@ const serverCompiler = webpack(serverConfig);
 async function createApp() {
     const app = express();
 
-    // app.use('/assets', express.static(path.resolve(__dirname, '../build/public/assets')));
     app.use(
         webpackDevMiddleware(clientCompiler, {
             publicPath: clientConfig.output.publicPath,
@@ -68,27 +73,24 @@ async function createApp() {
 }
 
 async function restartServer() {
-  console.log('[server] 🔁 Restarting...');
+    console.log('[server] 🔁 Restarting...');
 
-  if (server) {
-    server.close(async () => {
-      console.log('[server] Closed old server');
-      await startServer(); // 关闭旧的后再重启
-    });
-  } else {
-    await startServer(); // 第一次启动
-  }
+    if (server) {
+        server.close(async () => {
+            console.log('[server] Closed old server');
+            await startServer(); // 关闭旧的后再重启
+        });
+    } else {
+        await startServer(); // 第一次启动
+    }
 }
 
 async function startServer() {
-  const app = await createApp();
-  server = app.listen(port, () => {
-    console.log(`[server] Listening on port ${port}`);
-  });
+    const app = await createApp();
+    server = app.listen(port, () => {
+        console.log(`[server] Listening on port ${port}`);
+    });
 }
-
-
-let isServerStarted = false;
 
 // 监听构建完成后自动重启 Node 服务
 serverCompiler.hooks.done.tap('RestartServerPlugin', async () => {
@@ -96,7 +98,6 @@ serverCompiler.hooks.done.tap('RestartServerPlugin', async () => {
         await restartServer();
     } else {
         await startServer();
-        await open(`http://${local_host}:${port}`);
     }
 });
 

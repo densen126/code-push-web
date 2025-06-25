@@ -111,11 +111,13 @@ const clientConfig = merge(common, {
         filename: isDebug ? 'main.js' : 'main.[contenthash:8].js',
         chunkFilename: isDebug ? '[name].chunk.js' : '[name].[contenthash:8].chunk.js'
     },
+    // webpack serve 底层启动才会生效，目的是让默认存在于内存中的临时打包文件存入磁盘中
     // devServer: {
     //     devMiddleware: {
     //         writeToDisk: isDebug,
     //     },
     // },
+    // 项目较小，保持注释，后续根据需求解开即可
     // optimization: isDebug ? {
     //     minimize: false,
     //     splitChunks: false,

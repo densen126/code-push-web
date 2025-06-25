@@ -1,14 +1,14 @@
+import path from 'path';
 import express from 'express';
-import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import App from './components/App';
 import Html from './components/Html';
 import routes from 'routes';
 
 const app = express();
-const port = 3000;
 
-app.use('/assets', express.static('/build/public/assets'));
+// Serve static assets from the build output directory
+app.use('/assets', express.static(path.resolve(__dirname)));
 
 app.get('/', (req, res) => {
     const path = req.path;
