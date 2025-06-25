@@ -63,12 +63,12 @@ class MsgStack extends Component {
       <div>
         {
           _.map(self.props.items, function (item) {
-            var bsStyle = "info";
+            var variant = "info";
             if (_.indexOf(["info", "warning", "danger", "success"],item.type)!== -1){
-              bsStyle = item.type;
+              variant = item.type;
             }
             return  (
-              <Alert key={item.id} style={{ marginTop:-15}} bsStyle={bsStyle} onDismiss={()=>{self.props.close(item.id)}}>
+              <Alert key={item.id} style={{ marginTop:-15}} variant={variant} onClose={()=>{self.props.close(item.id)}} dismissible>
                 {item.text}
               </Alert>
             )

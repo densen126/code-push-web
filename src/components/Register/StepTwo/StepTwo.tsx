@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import _ from 'lodash';
 import {
-    ControlLabel,
     Form,
-    FormGroup,
-    FormControl,
     Button,
     Col,
     Alert,
@@ -75,12 +72,12 @@ function StepTwo({
 
     return (
         <Form style={{ maxWidth: 350, marginLeft: 'auto', marginRight: 'auto' }}>
-            <FormGroup>
-                <Alert bsStyle="warning">请登录邮箱，查看验证码!</Alert>
-            </FormGroup>
-            <FormGroup>
+            <Form.Group>
+                <Alert variant="warning">请登录邮箱，查看验证码!</Alert>
+            </Form.Group>
+            <Form.Group>
                 <Col sm={8} style={{ marginBottom: 10 }}>
-                    <FormControl
+                    <Form.Control
                         onChange={setInputValidateCode}
                         value={validateCode}
                         type="text"
@@ -92,16 +89,16 @@ function StepTwo({
                 <Col sm={4} style={{ marginBottom: 10 }}>
                     {countDownView}
                 </Col>
-            </FormGroup>
-            <FormGroup style={{ paddingTop: 20 }}>
+            </Form.Group>
+            <Form.Group style={{ paddingTop: 20 }}>
                 <div style={{ color: 'red', paddingLeft: 15 }}>
                     {_.get(error, 'message')}
                 </div>
-            </FormGroup>
-            <FormGroup style={{ textAlign: 'center', paddingTop: 20 }}>
+            </Form.Group>
+            <Form.Group style={{ textAlign: 'center', paddingTop: 20 }}>
                 <Button
                     style={{ width: '100%' }}
-                    bsStyle="primary"
+                    variant="primary"
                     onClick={() => {
                         if (!disabled) {
                             submit();
@@ -111,7 +108,7 @@ function StepTwo({
                 >
                     下一步
                 </Button>
-            </FormGroup>
+            </Form.Group>
         </Form>
     );
 }

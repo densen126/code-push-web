@@ -1,10 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import {
-  ControlLabel,
   Form,
-  FormGroup,
-  FormControl,
   Button,
 } from 'react-bootstrap';
 
@@ -67,9 +64,9 @@ class StepThree extends Component {
     }
     return (
       <Form style={{  maxWidth:350, marginLeft:"auto", marginRight: "auto" }}>
-        <FormGroup>
-          <ControlLabel>密码</ControlLabel>
-          <FormControl
+        <Form.Group>
+          <Form.Label>密码</Form.Label>
+          <Form.Control
             onChange={this.setInputPassword}
             onBlur={()=>this.setState({field1: true})}
             value={this.props.password}
@@ -77,39 +74,39 @@ class StepThree extends Component {
             placeholder="请输入密码"
             autoComplete="off"
             autoFocus
-            />
-        </FormGroup>
-        <FormGroup>
+          />
+        </Form.Group>
+        <Form.Group>
           <div style={{ color:'red' }} >
           {passwordTips}
           </div>
-        </FormGroup>
+        </Form.Group>
 
-        <FormGroup>
-          <ControlLabel>确认密码</ControlLabel>
-          <FormControl
+        <Form.Group>
+          <Form.Label>确认密码</Form.Label>
+          <Form.Control
             onChange={this.setInputPasswordConfirm}
             onBlur={()=>this.setState({field2: true})}
             type="password"
             value={this.props.passwordConfirm}
             placeholder="请再次输入密码"
             autoComplete="off"
-            />
-        </FormGroup>
-        <FormGroup>
+          />
+        </Form.Group>
+        <Form.Group>
           <div style={{ color:'red' }} >
           {passwordConfirmTips}
           </div>
-        </FormGroup>
-        <FormGroup style={{ paddingTop: 20 }}>
+        </Form.Group>
+        <Form.Group style={{ paddingTop: 20 }}>
           <div style={{ color:'red' }} >
           {_.get(this.props, 'error.message')}
           </div>
-        </FormGroup>
-        <FormGroup>
+        </Form.Group>
+        <Form.Group>
           <Button
             style={{width: "100%"}}
-            bsStyle="primary"
+            variant="primary"
             onClick={()=>{
               if (disabled) {
                 return;
@@ -120,7 +117,7 @@ class StepThree extends Component {
           >
           注册
           </Button>
-        </FormGroup>
+        </Form.Group>
       </Form>
     );
   }

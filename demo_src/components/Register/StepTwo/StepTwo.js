@@ -1,10 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import {
-  ControlLabel,
   Form,
-  FormGroup,
-  FormControl,
   Button,
   Col,
   Alert,
@@ -87,35 +84,35 @@ class StepTwo extends Component {
     );
     return (
       <Form style={{ maxWidth:350, marginLeft:"auto", marginRight: "auto" }}>
-        <FormGroup>
-          <Alert bsStyle="warning">
+        <Form.Group>
+          <Alert variant="warning">
             请登录邮箱，查看验证码!
           </Alert>
-        </FormGroup>
-        <FormGroup>
+        </Form.Group>
+        <Form.Group>
           <Col sm={8} style={{ marginBottom:10}} >
-            <FormControl
+            <Form.Control
               onChange={this.setInputValidateCode}
               value={this.props.validateCode}
               type="text"
               placeholder="请输入接收到的验证码"
               autoComplete="off"
               autoFocus
-              />
+            />
           </Col>
           <Col sm={4} style={{ marginBottom:10 }} >
           {countDownView}
           </Col>
-        </FormGroup>
-        <FormGroup style={{ paddingTop: 20 }}>
+        </Form.Group>
+        <Form.Group style={{ paddingTop: 20 }}>
           <div style={{ color:'red', paddingLeft:15 }} >
           {_.get(this.props, 'error.message')}
           </div>
-        </FormGroup>
-        <FormGroup style={{ textAlign: "center", paddingTop: 20 }}>
+        </Form.Group>
+        <Form.Group style={{ textAlign: "center", paddingTop: 20 }}>
           <Button
             style={{width: "100%"}}
-            bsStyle="primary"
+            variant="primary"
             onClick={()=>{
               if (disabled) {
                 return;
@@ -126,7 +123,7 @@ class StepTwo extends Component {
           >
           下一步
           </Button>
-        </FormGroup>
+        </Form.Group>
       </Form>
     );
   }

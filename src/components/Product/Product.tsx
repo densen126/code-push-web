@@ -41,7 +41,7 @@ function Product({ appName = '', items = [] }: ProductProps) {
                     </Breadcrumb.Item>
                     <Breadcrumb.Item active>{appName}</Breadcrumb.Item>
                 </Breadcrumb>
-                <Table striped bordered condensed hover responsive>
+                <Table striped bordered hover responsive size="sm">
                     <thead>
                         <tr>
                             <th style={{ textAlign: 'center' }}>Deployments</th>

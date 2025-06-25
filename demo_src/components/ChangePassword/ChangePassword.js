@@ -2,13 +2,9 @@
 import React, { PropTypes, Component } from 'react';
 import {
   Col,
-  ControlLabel,
   Form,
-  FormGroup,
-  FormControl,
-  Checkbox,
   Button,
-  Panel,
+  Card,
 } from 'react-bootstrap';
 
 import _ from 'lodash';
@@ -81,20 +77,22 @@ class ChangePassword extends Component {
     }
     return (
       <div style={{height:650, paddingLeft: 20, paddingRight:20 }}>
-        <Panel header="修改密码" style={{ maxWidth:350, marginLeft:"auto", marginRight: "auto" }}>
+        <Card style={{ maxWidth:350, marginLeft:"auto", marginRight: "auto" }}>
+          <Card.Header>修改密码</Card.Header>
+          <Card.Body>
           <Form>
-            <FormGroup>
-              <ControlLabel>原密码</ControlLabel>
-              <FormControl
+            <Form.Group>
+              <Form.Label>原密码</Form.Label>
+              <Form.Control
                 onChange={this.setOldPassword}
                 type="password"
                 value={this.props.oldPassword}
                 placeholder="请输入原密码"
                 onBlur={()=>this.setState({field1: true})}
                 autoFocus
-                />
-            </FormGroup>
-            <FormGroup>
+              />
+            </Form.Group>
+            <Form.Group>
               <div style={{ color:'red' }} >
               {
                 this.state.field1 ?
@@ -102,18 +100,18 @@ class ChangePassword extends Component {
                 : null
               }
               </div>
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>新密码</ControlLabel>
-              <FormControl
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>新密码</Form.Label>
+              <Form.Control
                 onChange={this.setNewPassword}
                 type="password"
                 value={this.props.newPassword}
                 placeholder="请您输入新的密码"
                 onBlur={()=>this.setState({field2: true})}
               />
-            </FormGroup>
-            <FormGroup>
+            </Form.Group>
+            <Form.Group>
               <div style={{ color:'red' }} >
               {
                 this.state.field2 ?
@@ -121,18 +119,18 @@ class ChangePassword extends Component {
                 : null
               }
               </div>
-            </FormGroup>
-             <FormGroup>
-              <ControlLabel>确认新密码</ControlLabel>
-              <FormControl
+            </Form.Group>
+             <Form.Group>
+              <Form.Label>确认新密码</Form.Label>
+              <Form.Control
                 onChange={this.setNewPasswordConfirm}
                 type="password"
                 value={this.props.newPasswordConfirm}
                 placeholder="请您再次输入新的密码"
                 onBlur={()=>this.setState({field3: true})}
               />
-            </FormGroup>
-            <FormGroup>
+            </Form.Group>
+            <Form.Group>
               <div style={{ color:'red' }} >
               {
                 this.state.field3 ?
@@ -140,16 +138,16 @@ class ChangePassword extends Component {
                 : null
               }
               </div>
-            </FormGroup>
-            <FormGroup style={{ paddingTop: 20 }}>
+            </Form.Group>
+            <Form.Group style={{ paddingTop: 20 }}>
               <div style={{ color:'red' }} >
               {_.get(this.props, 'error.message')}
               </div>
-            </FormGroup>
-            <FormGroup>
+            </Form.Group>
+            <Form.Group>
               <Button
                 style={{width: "100%"}}
-                bsStyle="primary"
+                variant="primary"
                 disabled={disabled}
                 onClick={()=>{
                   if (disabled) {
@@ -160,9 +158,10 @@ class ChangePassword extends Component {
               >
               确认
               </Button>
-            </FormGroup>
+            </Form.Group>
           </Form>
-        </Panel>
+          </Card.Body>
+        </Card>
       </div>
     );
   }

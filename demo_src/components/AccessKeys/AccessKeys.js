@@ -61,7 +61,7 @@ class AccessKeys extends Component {
         <td>
           <Button
             onClick={() => { self.props.removeKey(_.get(rowData, 'friendlyName')); }}
-            bsStyle="danger"
+            variant="danger"
           >
           移除
         </Button>
@@ -94,13 +94,13 @@ class AccessKeys extends Component {
               onClick={() => {
                 self.props.createKey();
               }}
-              bsStyle="primary"
+              variant="primary"
               disabled={!!this.props.isCreating}
             >
               创建key
             </Button>
           </Col>
-          <Table striped bordered condensed hover responsive>
+          <Table striped bordered hover responsive size="sm">
             <thead>
               <tr>
                 <th style={{ textAlign: 'center' }} >名字</th>

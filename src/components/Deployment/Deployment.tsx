@@ -23,7 +23,7 @@ function Deployment({ appName = '', deploymentName = '' }: DeploymentProps) {
                     </Breadcrumb.Item>
                     <Breadcrumb.Item active>{deploymentName}</Breadcrumb.Item>
                 </Breadcrumb>
-                <Table striped bordered condensed hover responsive>
+                <Table striped bordered hover responsive size="sm">
                     <thead>
                         <tr>
                             <th style={{ textAlign: 'center' }}>AppVersion</th>

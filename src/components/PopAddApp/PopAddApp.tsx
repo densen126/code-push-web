@@ -3,13 +3,10 @@ import React from 'react';
 import {
     Modal,
     Button,
-    FormGroup,
-    FormControl,
-    HelpBlock,
-    ControlLabel,
+    Form,
     Col,
     OverlayTrigger,
-    Popover
+    Popover,
 } from 'react-bootstrap';
 
 const popoverFocus = (
@@ -68,33 +65,33 @@ function PopAddApp({
                 <Modal.Title>添加App</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <FormGroup style={{ display: 'inline-block', width: '40%' }} validationState={isShowNameError ? 'error' : undefined}>
-                    <ControlLabel>App名字</ControlLabel>
+                <Form.Group style={{ display: 'inline-block', width: '40%' }}>
+                    <Form.Label>App名字</Form.Label>
                     <OverlayTrigger trigger={["hover"]} placement="bottom" overlay={popoverFocus}>
-                        <FormControl type="text" onChange={setName} value={appName} autoFocus />
+                        <Form.Control type="text" onChange={setName} value={appName} autoFocus isInvalid={isShowNameError} />
                     </OverlayTrigger>
-                    <FormControl.Feedback />
-                </FormGroup>
-                <FormGroup style={{ display: 'inline-block', width: '20%', paddingLeft: 15 }} validationState={isShowOSError ? 'error' : undefined}>
-                    <ControlLabel>平台</ControlLabel>
-                    <FormControl componentClass="select" value={os} onChange={setSelect}>
+                    <Form.Control.Feedback type="invalid" />
+                </Form.Group>
+                <Form.Group style={{ display: 'inline-block', width: '20%', paddingLeft: 15 }}>
+                    <Form.Label>平台</Form.Label>
+                    <Form.Select value={os} onChange={setSelect} isInvalid={isShowOSError}>
                         <option value="">选择平台</option>
                         <option value="iOS">iOS</option>
                         <option value="Android">Android</option>
                         <option value="Windows">Windows</option>
-                    </FormControl>
-                </FormGroup>
-                <FormGroup style={{ display: 'inline-block', width: '20%', paddingLeft: 15 }} validationState={isShowPlatformError ? 'error' : undefined}>
-                    <ControlLabel>类型</ControlLabel>
-                    <FormControl componentClass="select" value={platform} onChange={setPlatformSelect}>
+                    </Form.Select>
+                </Form.Group>
+                <Form.Group style={{ display: 'inline-block', width: '20%', paddingLeft: 15 }}>
+                    <Form.Label>类型</Form.Label>
+                    <Form.Select value={platform} onChange={setPlatformSelect} isInvalid={isShowPlatformError}>
                         <option value="">选择类型</option>
                         <option value="React-Native">React-Native</option>
                         <option value="Cordova">Cordova</option>
-                    </FormControl>
-                </FormGroup>
-                <FormGroup validationState="error">
-                    <HelpBlock>{errorTip}</HelpBlock>
-                </FormGroup>
+                    </Form.Select>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Text className="text-danger">{errorTip}</Form.Text>
+                </Form.Group>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={close}>关闭</Button>

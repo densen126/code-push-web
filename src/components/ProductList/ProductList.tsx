@@ -70,12 +70,12 @@ function ProductList({ isFetching = true, rs = [], popAddApp = () => {} }: Produ
                 <Col style={{ marginBottom: '20px' }}>
                     <Button
                         onClick={popAddApp}
-                        bsStyle="primary"
+                        variant="primary"
                     >
           添加应用
                     </Button>
                 </Col>
-                <Table striped bordered condensed hover responsive>
+                <Table striped bordered hover responsive size="sm">
                     <thead>
                         <tr>
                             <th style={{ textAlign: 'center' }} >产品名</th>

@@ -1,6 +1,6 @@
 
 import React, { PropTypes, Component } from 'react';
-import {Modal, Button, FormGroup, FormControl, HelpBlock} from 'react-bootstrap';
+import {Modal, Button, Form, FormControl} from 'react-bootstrap';
 
 class PopShowKey extends Component {
   static propTypes = {
@@ -31,23 +31,25 @@ class PopShowKey extends Component {
           <Modal.Title>创建密钥成功</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FormGroup validationState="success">
-            <FormControl
-              value={this.props.value}
-              onFocus={(event)=>{
-                event.target.select();
-              }}
-              onClick={(event)=>{
-                event.target.select();
-              }}
-              onMouseOver={(event)=>{
-                event.target.select();
-              }}
-              readOnly
-              type="text"
-            />
-            <HelpBlock>复制上面的密钥, 然后关闭弹框</HelpBlock>
-          </FormGroup>
+          <Form>
+            <Form.Group controlId="key" className="mb-3">
+              <Form.Control
+                value={this.props.value}
+                onFocus={(event)=>{
+                  event.target.select();
+                }}
+                onClick={(event)=>{
+                  event.target.select();
+                }}
+                onMouseOver={(event)=>{
+                  event.target.select();
+                }}
+                readOnly
+                type="text"
+              />
+              <Form.Text>复制上面的密钥, 然后关闭弹框</Form.Text>
+            </Form.Group>
+          </Form>
         </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.close}>关闭</Button>

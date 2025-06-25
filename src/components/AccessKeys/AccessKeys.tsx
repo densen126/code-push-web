@@ -51,7 +51,7 @@ function AccessKeys({
                 <td>{moment(_.get(rowData, 'createdTime')).fromNow()}</td>
                 <td>{moment(_.get(rowData, 'expires')).fromNow()}</td>
                 <td>
-                    <Button onClick={() => removeKey(_.get(rowData, 'friendlyName'))} bsStyle="danger">
+                    <Button onClick={() => removeKey(_.get(rowData, 'friendlyName'))} variant="danger">
                         移除
                     </Button>
                 </td>
@@ -72,11 +72,11 @@ function AccessKeys({
                     <Breadcrumb.Item active>密钥列表</Breadcrumb.Item>
                 </Breadcrumb>
                 <Col style={{ marginBottom: '20px' }}>
-                    <Button onClick={createKey} bsStyle="primary" disabled={!!isCreating}>
+                    <Button onClick={createKey} variant="primary" disabled={!!isCreating}>
                         创建key
                     </Button>
                 </Col>
-                <Table striped bordered condensed hover responsive>
+                <Table striped bordered hover responsive size="sm">
                     <thead>
                         <tr>
                             <th style={{ textAlign: 'center' }} >名字</th>

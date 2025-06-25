@@ -2,10 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import validator from 'validator';
 import {
-    ControlLabel,
     Form,
-    FormGroup,
-    FormControl,
     Button,
 } from 'react-bootstrap';
 import Link from '../../Link';
@@ -30,9 +27,9 @@ function StepOne({
 
     return (
         <Form style={{ maxWidth: 350, marginLeft: 'auto', marginRight: 'auto' }}>
-            <FormGroup>
-                <ControlLabel>邮箱地址</ControlLabel>
-                <FormControl
+            <Form.Group>
+                <Form.Label>邮箱地址</Form.Label>
+                <Form.Control
                     onChange={(e) => emailInputChange(e.target.value)}
                     value={email}
                     type="email"
@@ -40,14 +37,14 @@ function StepOne({
                     autoComplete="off"
                     autoFocus
                 />
-            </FormGroup>
-            <FormGroup style={{ paddingTop: 20 }}>
+            </Form.Group>
+            <Form.Group style={{ paddingTop: 20 }}>
                 <div style={{ color: 'red' }}>{_.get(error, 'message')}</div>
-            </FormGroup>
-            <FormGroup>
+            </Form.Group>
+            <Form.Group>
                 <Button
                     style={{ width: '100%' }}
-                    bsStyle="primary"
+                    variant="primary"
                     onClick={() => {
                         if (!disabled) {
                             submit();
@@ -57,10 +54,10 @@ function StepOne({
                 >
                     下一步
                 </Button>
-            </FormGroup>
-            <FormGroup style={{ paddingTop: 28, textAlign: 'center' }}>
+            </Form.Group>
+            <Form.Group style={{ paddingTop: 28, textAlign: 'center' }}>
                 <Link to="/login">已有帐号</Link>
-            </FormGroup>
+            </Form.Group>
         </Form>
     );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
-import { ControlLabel, Form, FormGroup, FormControl, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
 export interface StepThreeProps {
     isFetching?: boolean;
@@ -47,9 +47,9 @@ function StepThree({
 
     return (
         <Form style={{ maxWidth: 350, marginLeft: 'auto', marginRight: 'auto' }}>
-            <FormGroup>
-                <ControlLabel>密码</ControlLabel>
-                <FormControl
+            <Form.Group>
+                <Form.Label>密码</Form.Label>
+                <Form.Control
                     onChange={setInputPassword}
                     onBlur={() => setField1(true)}
                     value={password}
@@ -58,16 +58,16 @@ function StepThree({
                     autoComplete="off"
                     autoFocus
                 />
-            </FormGroup>
-            <FormGroup>
+            </Form.Group>
+            <Form.Group>
                 <div style={{ color:'red' }}>
                     {passwordTips}
                 </div>
-            </FormGroup>
+            </Form.Group>
 
-            <FormGroup>
-                <ControlLabel>确认密码</ControlLabel>
-                <FormControl
+            <Form.Group>
+                <Form.Label>确认密码</Form.Label>
+                <Form.Control
                     onChange={setInputPasswordConfirm}
                     onBlur={() => setField2(true)}
                     type="password"
@@ -75,21 +75,21 @@ function StepThree({
                     placeholder="请再次输入密码"
                     autoComplete="off"
                 />
-            </FormGroup>
-            <FormGroup>
+            </Form.Group>
+            <Form.Group>
                 <div style={{ color:'red' }}>
                     {passwordConfirmTips}
                 </div>
-            </FormGroup>
-            <FormGroup style={{ paddingTop: 20 }}>
+            </Form.Group>
+            <Form.Group style={{ paddingTop: 20 }}>
                 <div style={{ color:'red' }}>
                     {_.get(error, 'message')}
                 </div>
-            </FormGroup>
-            <FormGroup>
+            </Form.Group>
+            <Form.Group>
                 <Button
                     style={{width: '100%'}}
-                    bsStyle="primary"
+                    variant="primary"
                     onClick={() => {
                         if (!disabled) {
                             submit();
@@ -99,7 +99,7 @@ function StepThree({
                 >
           注册
                 </Button>
-            </FormGroup>
+            </Form.Group>
         </Form>
     );
 }

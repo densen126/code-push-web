@@ -1,13 +1,9 @@
 import React from 'react';
 import {
     Col,
-    ControlLabel,
     Form,
-    FormGroup,
-    FormControl,
-    Checkbox,
     Button,
-    Panel,
+    Card,
 } from 'react-bootstrap';
 import Link from '../Link';
 
@@ -37,46 +33,49 @@ function Login({
 
     return (
         <div style={{ height: 650, paddingLeft: 20, paddingRight: 20 }}>
-            <Panel header="登录" style={{ maxWidth: 350, marginLeft: 'auto', marginRight: 'auto' }}>
+            <Card style={{ maxWidth: 350, marginLeft: 'auto', marginRight: 'auto' }}>
+                <Card.Header>登录</Card.Header>
+                <Card.Body>
                 <Form>
-                    <FormGroup>
-                        <ControlLabel>邮箱地址</ControlLabel>
-                        <FormControl
+                    <Form.Group>
+                        <Form.Label>邮箱地址</Form.Label>
+                        <Form.Control
                             onChange={(e) => accountInputChange(e.target.value)}
                             value={account}
                             type="email"
                             placeholder="请输入邮箱地址"
                             autoFocus
                         />
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>密码</ControlLabel>
-                        <FormControl
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>密码</Form.Label>
+                        <Form.Control
                             onChange={(e) => passwordInputChange(e.target.value)}
                             value={password}
                             type="password"
                             placeholder="请输入登录密码"
                         />
-                    </FormGroup>
-                    <FormGroup style={{ paddingTop: 20 }}>
+                    </Form.Group>
+                    <Form.Group style={{ paddingTop: 20 }}>
                         <div style={{ color: 'red' }}>{error.errorMessage}</div>
-                    </FormGroup>
-                    <FormGroup>
+                    </Form.Group>
+                    <Form.Group>
                         <Button
                             style={{ width: '100%' }}
-                            bsStyle="primary"
+                            variant="primary"
                             onClick={handleSubmit}
                             disabled={isFetching}
                         >
                             {isFetching ? '登录中...' : '登录'}
                         </Button>
-                    </FormGroup>
-                    <FormGroup style={{ paddingTop: 28 }}>
+                    </Form.Group>
+                    <Form.Group style={{ paddingTop: 28 }}>
                         <span style={{ marginRight: 20 }}>还没有账号?</span>
                         <Link to="/register">立即注册</Link>
-                    </FormGroup>
+                    </Form.Group>
                 </Form>
-            </Panel>
+                </Card.Body>
+            </Card>
         </div>
     );
 }

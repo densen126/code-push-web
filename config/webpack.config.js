@@ -192,7 +192,7 @@ const serverConfig = merge(common, {
     },
     externals: [
         nodeExternals(),
-        /^\.\/assets\.json$/,
+        /assets\.json$/,
         ({ context, request }, callback) => {
             const isExternal = request.match(/^[@a-z][a-z/\.\-0-9]*$/i) && !request.match(/\.(css|less|scss|sss)$/i);
             callback(null, Boolean(isExternal));  // Use callback to signal whether the module is external

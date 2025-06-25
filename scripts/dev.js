@@ -1,5 +1,6 @@
 // start.js
 import path from 'path';
+import fs from 'fs';
 import express from 'express';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
@@ -44,6 +45,13 @@ clientConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 clientConfig.plugins.push(new ReactRefreshWebpackPlugin({ overlay: false }));
 
 const clientCompiler = webpack(clientConfig);
+clientCompiler.hooks.done.tap('CopyAssetsJsonPlugin', () => {
+    const srcFile = path.resolve('build/assets.json');
+    const destFile = path.resolve('build/public/assets/assets.json');
+    if (fs.existsSync(srcFile)) {
+        fs.copyFileSync(srcFile, destFile);
+    }
+});
 const serverCompiler = webpack(serverConfig);
 
 async function createApp() {

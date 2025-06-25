@@ -1,7 +1,7 @@
 
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
-import { Navbar } from 'react-bootstrap';
+import { Navbar, Container } from 'react-bootstrap';
 import s from './Header.css';
 import Link from '../Link';
 import Navigation from '../Navigation';
@@ -13,16 +13,16 @@ export interface HeaderProps {
 
 function Header({ isAuth = false, noNav = false }: HeaderProps) {
     return (
-        <Navbar style={{ fontWeight: 400 }} inverse collapseOnSelect>
-            <Navbar.Header>
+        <Navbar style={{ fontWeight: 400 }} bg="dark" variant="dark" collapseOnSelect expand="lg">
+            <Container>
                 <Navbar.Brand>
                     <Link className={s.brand} to="/">
                         <span>CodePush Server</span>
                     </Link>
                 </Navbar.Brand>
                 <Navbar.Toggle />
-            </Navbar.Header>
-            {!noNav ? <Navigation isAuth={isAuth} /> : null}
+                {!noNav ? <Navigation isAuth={isAuth} /> : null}
+            </Container>
         </Navbar>
     );
 }

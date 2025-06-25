@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Modal, Button, FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 interface Props {
     value?: string;
@@ -17,8 +17,8 @@ function PopShowKey({ value = '', close, showModal = false }: Props) {
                 <Modal.Title>创建密钥成功</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <FormGroup validationState="success">
-                    <FormControl
+                <Form.Group>
+                    <Form.Control
                         value={value}
                         onFocus={(e) => e.currentTarget.select()}
                         onClick={(e) => e.currentTarget.select()}
@@ -26,8 +26,8 @@ function PopShowKey({ value = '', close, showModal = false }: Props) {
                         readOnly
                         type="text"
                     />
-                    <HelpBlock>复制上面的密钥, 然后关闭弹框</HelpBlock>
-                </FormGroup>
+                    <Form.Text className="text-success">复制上面的密钥, 然后关闭弹框</Form.Text>
+                </Form.Group>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={handleClose}>关闭</Button>

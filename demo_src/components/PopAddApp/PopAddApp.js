@@ -3,10 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import {
   Modal,
   Button,
-  FormGroup,
-  FormControl,
-  HelpBlock,
-  ControlLabel,
+  Form,
   Col,
   OverlayTrigger,
   Popover
@@ -101,46 +98,40 @@ class PopAddApp extends Component {
           <Modal.Title>添加App</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FormGroup style={{display: 'inline-block',width: '40%'}} validationState={this.props.isShowNameError ? `error` : null}>
-            <ControlLabel>App名字</ControlLabel>
-            <OverlayTrigger trigger={["hover"]} placement="bottom" overlay={popoverFocus}>
-            <FormControl
-              type="text"
-              onChange={this.setName}
-              value={this.props.appName}
-              autoFocus
-            />
-            </OverlayTrigger>
-            <FormControl.Feedback />
-          </FormGroup>
-          <FormGroup style={{display: 'inline-block',width: '20%',paddingLeft: 15}} validationState={this.props.isShowOSError ? `error` : null}>
-            <ControlLabel>平台</ControlLabel>
-            <FormControl
-              componentClass="select"
-              value={this.props.os}
-              onChange={this.setSelect}
-            >
-              <option value="" >选择平台</option>
-              <option value="iOS" >iOS</option>
-              <option value="Android" >Android</option>
-              <option value="Windows" >Windows</option>
-            </FormControl>
-          </FormGroup>
-          <FormGroup style={{display: 'inline-block',width: '20%',paddingLeft: 15}} validationState={this.props.isShowPlatformError ? `error` : null}>
-            <ControlLabel>类型</ControlLabel>
-            <FormControl
-              componentClass="select"
-              value={this.props.platform}
-              onChange={this.setPlatformSelect}
-            >
-              <option value="" >选择类型</option>
-              <option value="React-Native" >React-Native</option>
-              <option value="Cordova" >Cordova</option>
-            </FormControl>
-          </FormGroup>
-          <FormGroup validationState="error">
-            <HelpBlock>{this.props.errorTip}</HelpBlock>
-          </FormGroup>
+          <Form>
+            <Form.Group style={{display: 'inline-block',width: '40%'}} controlId="appName" isInvalid={this.props.isShowNameError}>
+              <Form.Label>App名字</Form.Label>
+              <OverlayTrigger trigger={["hover"]} placement="bottom" overlay={popoverFocus}>
+              <Form.Control
+                type="text"
+                onChange={this.setName}
+                value={this.props.appName}
+                autoFocus
+              />
+              </OverlayTrigger>
+              <Form.Control.Feedback type="invalid" />
+            </Form.Group>
+            <Form.Group style={{display: 'inline-block',width: '20%',paddingLeft: 15}} controlId="os" isInvalid={this.props.isShowOSError}>
+              <Form.Label>平台</Form.Label>
+              <Form.Select value={this.props.os} onChange={this.setSelect}>
+                <option value="">选择平台</option>
+                <option value="iOS">iOS</option>
+                <option value="Android">Android</option>
+                <option value="Windows">Windows</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group style={{display: 'inline-block',width: '20%',paddingLeft: 15}} controlId="platform" isInvalid={this.props.isShowPlatformError}>
+              <Form.Label>类型</Form.Label>
+              <Form.Select value={this.props.platform} onChange={this.setPlatformSelect}>
+                <option value="">选择类型</option>
+                <option value="React-Native">React-Native</option>
+                <option value="Cordova">Cordova</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group isInvalid>
+              <Form.Text className="text-danger">{this.props.errorTip}</Form.Text>
+            </Form.Group>
+          </Form>
         </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.close}>关闭</Button>
