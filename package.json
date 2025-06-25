@@ -6,6 +6,7 @@
         "dev": "ts-node -r tsconfig-paths/register scripts/dev",
         "build": "ts-node -r tsconfig-paths/register scripts/build",
         "clean": "npm dedupe",
+        "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
         "start": "ts-node -r tsconfig-paths/register scripts/runServer"
     },
     "engines": {
@@ -78,6 +79,9 @@
         "webpack-dev-server": "^5.2.2",
         "webpack-hot-middleware": "^2.26.1",
         "webpack-merge": "^6.0.1",
-        "webpack-node-externals": "^3.0.0"
+        "webpack-node-externals": "^3.0.0",
+        "eslint": "^9.29.0",
+        "@typescript-eslint/parser": "^8.35.0",
+        "@typescript-eslint/eslint-plugin": "^8.35.0"
     }
 }

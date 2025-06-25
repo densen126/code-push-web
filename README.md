@@ -51,6 +51,7 @@ npm start
 
 - `npm start` - 启动开发服务器
 - `npm run build` - 打包生产环境文件（输出至 `dist/` 目录）
+- `npm run lint` - 使用 ESLint 进行代码检查
 
 ## ✅ 技术说明
 

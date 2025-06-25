@@ -19,11 +19,11 @@ import { hydrateRoot } from 'react-dom/client';
 import App from './components/App';
 
 declare global {
-  interface Window {
-    __INITIAL_DATA__?: {
-      path?: string;
-    };
-  }
+    interface Window {
+        __INITIAL_DATA__?: {
+            path?: string;
+        };
+    }
 }
 
 const initialPath = window.__INITIAL_DATA__?.path || window.location.pathname;
