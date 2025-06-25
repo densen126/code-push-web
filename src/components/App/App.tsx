@@ -10,7 +10,7 @@
 import React, { Children, useEffect, ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import _ from 'lodash';
-import uuid from 'uuid';
+import { v1 as uuidv1 } from 'uuid';
 import restApi from '../../network/RestApi';
 import { fetchAuth } from '../../actions/authActions';
 
@@ -54,12 +54,12 @@ function App({ context, children }: Props) {
     useEffect(() => {
         let aQQGuid = localStorage.getItem('aQQ_guid');
         if (_.isEmpty(aQQGuid) || aQQGuid.length < 10) {
-            aQQGuid = uuid.v1();
+            aQQGuid = uuidv1();
             localStorage.setItem('aQQ_guid', aQQGuid);
         }
         let sessid = sessionStorage.getItem('sessid');
         if (_.isEmpty(sessid) || sessid.length < 10) {
-            sessid = uuid.v1();
+            sessid = uuidv1();
             sessionStorage.setItem('sessid', sessid);
         }
         restApi.setUUID(sessid, aQQGuid);

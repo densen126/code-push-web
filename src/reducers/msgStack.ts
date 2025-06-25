@@ -4,13 +4,13 @@ import {
 } from '../actions/actionTypes';
 import _ from 'lodash';
 import restApi from '../network/RestApi';
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 export function msgStack(state = {rs:[]}, action) {
     let payload = action.payload;
     switch (action.type) {
     case MSG_STACK_SHOW_MSG:
-        var id = uuid.v4();
+        var id = uuidv4();
         var data = Object.assign({}, state);
         var msg = {
             id,

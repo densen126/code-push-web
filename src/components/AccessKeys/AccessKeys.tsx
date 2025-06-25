@@ -5,6 +5,7 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 import s from './AccessKeys.css';
 import cx from 'classnames';
 import _ from 'lodash';
+import moment from 'moment';
 import Link from '../Link';
 import MyEditor from '../MyEditor';
 import PopShowKey from './PopShowKey';
@@ -33,7 +34,6 @@ function AccessKeys({
     token = '',
 }: Props) {
     const renderRow = (rowData, index) => {
-        const moment = require('moment');
         return (
             <tr key={_.get(rowData, 'id')}>
                 <td>

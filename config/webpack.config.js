@@ -107,6 +107,12 @@ const clientConfig = merge(common, {
     name: 'client',
     mode: isDebug ? 'development' : 'production',
     target: 'web',
+    resolve: {
+        ...common.resolve,
+        fallback: {
+            buffer: require.resolve('buffer/')
+        }
+    },
     entry: path.resolve('src/client.tsx'),
     output: {
         ...common.output,
