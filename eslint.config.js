@@ -3,6 +3,9 @@ const parser = require('@typescript-eslint/parser');
 
 module.exports = [
     {
+        ignores: ['build/**'],
+    },
+    {
         files: ['**/*.{js,jsx,ts,tsx}'],
         languageOptions: {
             parser,
@@ -17,7 +20,9 @@ module.exports = [
         },
         rules: {
             indent: ['error', 4],
-            'no-console': 'off'
+            'no-console': 'off',
+            "no-unused-expressions": 0,
+            "padded-blocks": 0
         }
     }
 ];

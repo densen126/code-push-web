@@ -5,9 +5,9 @@
     "scripts": {
         "dev": "ts-node -r tsconfig-paths/register scripts/dev",
         "build": "ts-node -r tsconfig-paths/register scripts/build",
-        "clean": "npm dedupe",
+        "start": "ts-node -r tsconfig-paths/register scripts/runServer",
         "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-        "start": "ts-node -r tsconfig-paths/register scripts/runServer"
+        "clean": "npm dedupe"
     },
     "engines": {
         "node": ">=22.0.0",
