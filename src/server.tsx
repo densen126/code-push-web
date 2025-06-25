@@ -24,7 +24,7 @@ import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
 import routes from './routes';
-import assets from '../../assets.json';
+import assets from './../assets.json';
 import configureStore from './store/configureStore';
 import { port } from './config';
 

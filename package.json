@@ -2,6 +2,7 @@
     "name": "code-push-web",
     "version": "1.0.0",
     "private": true,
+    "type": "commonjs",
     "license": "MIT",
     "scripts": {
         "dev": "ts-node -r tsconfig-paths/register scripts/dev",
@@ -10,6 +11,7 @@
         "postinstall": "patch-package",
         "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
         "clean": "npm dedupe",
+        "clean_force": "rm -rf node_modules package-lock.json && npm install",
         "test": "tsx node_modules/mocha/bin/_mocha -r ./test/setup.js -r ./test/registerCSS.js \"src/**/*.test.ts\" \"src/**/*.test.tsx\""
     },
     "engines": {

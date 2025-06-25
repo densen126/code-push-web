@@ -24,6 +24,3 @@ if (require.main === module) {
         process.exit(1);
     });
 }
-
-// 为什么直接启动 express 会报错无法引入模块，找不到模块
-// 改用函数却没问题了

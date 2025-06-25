@@ -1,11 +1,9 @@
-import fs from 'fs';
-import path from 'path';
 import webpack from 'webpack';
 import webpackConfig from '../config/webpack.config.js';
 import run from './run.js';
 
 async function build() {
-    fs.rmSync(path.resolve('build'), { recursive: true, force: true });
+    // fs.rmSync(path.resolve('build'), { recursive: true, force: true });
 
     const compiler = webpack(webpackConfig);
 

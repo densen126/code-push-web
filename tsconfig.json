@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "ES2020", // 推荐更高目标版本以支持现代语法
-        "module": "ESNext", // SSR 环境（Node）推荐使用 CommonJS
+        "module": "CommonJS", // SSR 环境（Node）推荐使用 CommonJS
         "lib": [
             "DOM",
             "DOM.Iterable",

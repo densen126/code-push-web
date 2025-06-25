@@ -8,7 +8,8 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import BrowserSyncPlugin from 'browser-sync-webpack-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import webpackConfig from './../config/webpack.config.js';
-import { local_host, port } from './../config/config.js'
+import { local_host, port } from './../config/config'
+
 
 let server;
 let isServerStarted = false;
@@ -45,13 +46,6 @@ clientConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 clientConfig.plugins.push(new ReactRefreshWebpackPlugin({ overlay: false }));
 
 const clientCompiler = webpack(clientConfig);
-clientCompiler.hooks.done.tap('CopyAssetsJsonPlugin', () => {
-    const srcFile = path.resolve('build/assets.json');
-    const destFile = path.resolve('build/public/assets/assets.json');
-    if (fs.existsSync(srcFile)) {
-        fs.copyFileSync(srcFile, destFile);
-    }
-});
 const serverCompiler = webpack(serverConfig);
 
 async function createApp() {
@@ -69,7 +63,8 @@ async function createApp() {
     );
     app.use(webpackHotMiddleware(clientCompiler));
 
-    const mod = await import(serverPath);
+    // const mod = await import(serverPath);
+    const mod = require(serverPath);
     let ssrApp = mod.default || mod;
 
     app.use((req, res, next) => {

@@ -22,7 +22,7 @@ const common = {
     },
     output: {
         path: path.resolve(__dirname, '../build/public/assets'),
-        publicPath: '/assets/',
+        publicPath: 'public',
         pathinfo: isVerbose,
     },
     module: {
@@ -169,7 +169,7 @@ const clientConfig = merge(common, {
             __DEV__: isDebug,
         }),
         new AssetsPlugin({
-            path: path.resolve('build'),
+            path: path.resolve('build/public'),
             filename: 'assets.json',
             prettyPrint: true,
         }),

@@ -2,7 +2,6 @@ declare module '*.css';
 declare module '*.json';
 declare module 'cookie-parser';
 declare module 'pretty-error';
-declare module 'universal-router';
 declare module 'query-string';
 declare module 'history';
 declare module 'redux-logger';
