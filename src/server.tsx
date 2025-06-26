@@ -1,17 +1,8 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import path from 'path';
 import express from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import React from 'react';
 import {
     renderToString,
     renderToStaticMarkup,
@@ -66,18 +57,20 @@ app.use(async (req, res, next) => {
         const context = {
             // Enables critical path CSS rendering
             // https://github.com/kriasoft/isomorphic-style-loader
-            insertCss: (...styles) => {
-                 
-                styles.forEach(style => css.add(style._getCss()));
+            insertCss: (...styles: any[]) => {
+                const removeCss = styles.map(style => style._insertCss());
+                return () => {
+                    removeCss.forEach(dispose => dispose());
+                };
             },
             // Initialize a new Redux store
             // http://redux.js.org/docs/basics/UsageWithReact.html
             store,
         };
 
-        const route = await UniversalRouter.resolve(routes, {
-            ...context,
-            path: req.path,
+        const router = new UniversalRouter(routes, {context: context});
+        const route = await router.resolve({
+            pathname: req.path,
             query: req.query,
         });
 
@@ -124,16 +117,16 @@ const pe = new PrettyError();
 pe.skipNodeFiles();
 pe.skipPackage('express');
 
-app.use((err, req, res, next) => {  
-    console.log(pe.render(err));  
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    console.log(pe.render(err));
     const html = renderToStaticMarkup(
         <Html
             title="Internal Server Error"
             description={err.message}
-            styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]}  
+            styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]}
         >
             {renderToString(<ErrorPageWithoutStyle error={err} />)}
-        </Html>,
+        </Html>
     );
     res.status(err.status || 500);
     res.send(`<!doctype html>${html}`);
@@ -144,4 +137,4 @@ app.use((err, req, res, next) => {
 // -----------------------------------------------------------------------------
 
 export default app;
- 
+

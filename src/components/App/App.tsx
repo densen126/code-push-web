@@ -14,6 +14,7 @@ import { v1 as uuidv1 } from 'uuid';
 import restApi from '../../network/RestApi';
 import { fetchAuth } from '../../actions/authActions';
 
+
 export interface ContextType {
     insertCss: (...styles: any[]) => () => void;
     store: {
@@ -52,12 +53,12 @@ interface Props {
 
 function App({ context, children }: Props) {
     useEffect(() => {
-        let aQQGuid = localStorage.getItem('aQQ_guid');
+        let aQQGuid = localStorage.getItem('aQQ_guid') as string;
         if (_.isEmpty(aQQGuid) || aQQGuid.length < 10) {
             aQQGuid = uuidv1();
             localStorage.setItem('aQQ_guid', aQQGuid);
         }
-        let sessid = sessionStorage.getItem('sessid');
+        let sessid = sessionStorage.getItem('sessid') as string;
         if (_.isEmpty(sessid) || sessid.length < 10) {
             sessid = uuidv1();
             sessionStorage.setItem('sessid', sessid);

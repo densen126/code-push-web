@@ -13,3 +13,26 @@ declare module 'draft-js';
 declare module 'validator';
 declare module 'uuid';
 declare module 'bluebird';
+
+declare const module: {
+  hot?: {
+    accept(deps?: string | string[], callback?: () => void): void;
+  };
+};
+
+interface Window {
+    APP_STATE: any;
+    ga?: (...args: any[]) => void;
+}
+
+declare const __DEV__: boolean;
+
+interface NodeModule {
+    hot?: {
+        accept(path: string, callback: () => void): void;
+    };
+}
+
+interface NodeRequire {
+    ensure(deps: string[], callback: (require: NodeRequire) => void, chunkName?: string): void;
+}

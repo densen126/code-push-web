@@ -1,58 +1,43 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React from 'react';
 import { hydrateRoot, Root } from 'react-dom/client';
 import UniversalRouter from 'universal-router';
 import queryString from 'query-string';
-import { createPath } from 'history';
+import { createPath, Action as HistoryAction } from 'history';
 import history from './core/history';
 import App from './components/App';
 import configureStore from './store/configureStore';
 import { updateMeta } from './core/DOMUtils';
 import { ErrorReporter } from './core/devUtils';
 
-// Global (context) variables that can be easily accessed from any React component
-// https://facebook.github.io/react/docs/context.html
-const context = {
-    // Enables critical path CSS rendering
-    // https://github.com/kriasoft/isomorphic-style-loader
-    insertCss: (...styles) => {
-     
+interface ExtendedLocation {
+  pathname: string;
+  search: string;
+  hash: string;
+  key: string;
+  state?: unknown;
+}
+
+type Action = typeof HistoryAction;
+
+const context: any = {
+    insertCss: (...styles: any[]) => {
         const removeCss = styles.map(x => x._insertCss());
         return () => { removeCss.forEach(f => f()); };
     },
-    // Initialize a new Redux store
-    // http://redux.js.org/docs/basics/UsageWithReact.html
-    store: configureStore(window.APP_STATE, { history }),
+    store: configureStore((window as any).APP_STATE, { history }),
 };
 
-// Switch off the native scroll restoration behavior and handle it manually
-// https://developers.google.com/web/updates/2015/09/history-api-scroll-restoration
-const scrollPositionsHistory = {};
-if (window.history && 'scrollRestoration' in window.history) {
+const scrollPositionsHistory: Record<string, { scrollX: number, scrollY: number }> = {};
+if ('scrollRestoration' in window.history) {
     window.history.scrollRestoration = 'manual';
 }
 
-let onRenderComplete = function initialRenderComplete() {
+let onRenderComplete: (route: any, location: ExtendedLocation) => void = function initialRenderComplete() {
     const elem = document.getElementById('css');
-    if (elem) elem.parentNode.removeChild(elem);
-    onRenderComplete = function renderComplete(route, location) {
+    if (elem) elem.parentNode?.removeChild(elem);
+    onRenderComplete = function renderComplete(route: any, location: ExtendedLocation) {
         document.title = route.title;
-
         updateMeta('description', route.description);
-        // Update necessary tags in <head> at runtime here, ie:
-        // updateMeta('keywords', route.keywords);
-        // updateCustomMeta('og:url', route.canonicalUrl);
-        // updateCustomMeta('og:image', route.imageUrl);
-        // updateLink('canonical', route.canonicalUrl);
-        // etc.
 
         let scrollX = 0;
         let scrollY = 0;
@@ -70,52 +55,37 @@ let onRenderComplete = function initialRenderComplete() {
             }
         }
 
-        // Restore the scroll position if it was saved into the state
-        // or scroll to the given #hash anchor
-        // or scroll to top of the page
         window.scrollTo(scrollX, scrollY);
 
-        // Google Analytics tracking. Don't send 'pageview' event after
-        // the initial rendering, as it was already sent
-        if (window.ga) {
+        if (typeof window.ga === 'function') {
             window.ga('send', 'pageview', createPath(location));
         }
     };
 };
 
-
 const container = document.getElementById('app');
 let root: Root | null = null;
-let currentLocation = history.location;
+let currentLocation: ExtendedLocation = history.location;
 let routes = require('./routes').default;
 
-// Re-render the app when window.location changes
-async function onLocationChange(location, action) {
-    // Remember the latest scroll position for the previous location
+async function onLocationChange(location: ExtendedLocation, action?: Action) {
     scrollPositionsHistory[currentLocation.key] = {
         scrollX: window.pageXOffset,
         scrollY: window.pageYOffset,
     };
-    // Delete stored scroll position for next page if any
     if (action === 'PUSH') {
         delete scrollPositionsHistory[location.key];
     }
     currentLocation = location;
 
     try {
-    // Traverses the list of routes in the order they are defined until
-    // it finds the first route that matches provided URL path string
-    // and whose action method returns anything other than `undefined`.
-        const route = await UniversalRouter.resolve(routes, {
-            ...context,
-            path: location.pathname,
+        const router = new UniversalRouter(routes, {context: context});
+        const route = await router.resolve({
+            pathname: location.pathname,
             query: queryString.parse(location.search),
         });
 
-        // Prevent multiple page renders during the routing process
-        if (currentLocation.key !== location.key) {
-            return;
-        }
+        if (currentLocation.key !== location.key) return;
 
         if (route.redirect) {
             history.replace(route.redirect);
@@ -128,9 +98,9 @@ async function onLocationChange(location, action) {
         } else {
             root.render(element);
         }
+
         onRenderComplete(route, location);
-    } catch (error) {
-    // Display the error in full-screen for development mode
+    } catch (error: any) {
         if (__DEV__) {
             root = null;
             document.title = `Error: ${error.message}`;
@@ -138,31 +108,24 @@ async function onLocationChange(location, action) {
             throw error;
         }
 
-        console.error(error);  
-
-        // Do a full page reload if error occurs during client-side navigation
+        console.error(error);
         if (action && currentLocation.key === location.key) {
             window.location.reload();
         }
     }
 }
 
-// Handle client-side navigation by using HTML5 History API
-// For more information visit https://github.com/mjackson/history#readme
 history.listen(onLocationChange);
 onLocationChange(currentLocation);
 
-// Handle errors that might happen after rendering
-// Display the error in full-screen for development mode
 if (__DEV__) {
-    window.addEventListener('error', (event) => {
+    window.addEventListener('error', (event: ErrorEvent) => {
         root = null;
         document.title = `Runtime Error: ${event.error.message}`;
         hydrateRoot(container as Element, <ErrorReporter error={event.error} />);
     });
 }
 
-// Enable Hot Module Replacement (HMR)
 if (module.hot) {
     module.hot.accept('./routes', () => {
         routes = require('./routes').default;
