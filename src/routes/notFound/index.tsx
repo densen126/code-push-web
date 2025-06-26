@@ -15,7 +15,8 @@ const title = 'Page Not Found';
 
 export default {
 
-    path: '*',
+    // Universal Router v9 wildcard route
+    path: '(.*)',
 
     action() {
         return {

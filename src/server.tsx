@@ -10,7 +10,7 @@ import {
 } from 'react-dom/server';
 import UniversalRouter from 'universal-router';
 import PrettyError from 'pretty-error';
-import App from './components/App';
+import App, { ContextType } from './components/App';
 import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
@@ -54,7 +54,7 @@ app.use(async (req, res, next) => {
 
         // Global (context) variables that can be easily accessed from any React component
         // https://facebook.github.io/react/docs/context.html
-        const context = {
+        const context: ContextType = {
             // Enables critical path CSS rendering
             // https://github.com/kriasoft/isomorphic-style-loader
             insertCss: (...styles: any[]) => {

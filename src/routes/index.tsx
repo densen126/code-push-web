@@ -14,7 +14,8 @@ export default {
         require('./users').default,
         require('./users').settings,
         require('./register').default,
-        // Wildcard routes, e.g. { path: '*', ... } (must go last)
+        // Wildcard routes for Universal Router v9
+        // e.g. { path: '(.*)', ... } (must go last)
         require('./notFound').default,
     ],
 

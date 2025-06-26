@@ -8,7 +8,9 @@
  */
 
 import React, { Children, useEffect, ReactElement } from 'react';
+import StyleContext from 'isomorphic-style-loader/StyleContext';
 import { Provider } from 'react-redux';
+import type { EnhancedStore } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { v1 as uuidv1 } from 'uuid';
 import restApi from '../../network/RestApi';
@@ -17,11 +19,7 @@ import { fetchAuth } from '../../actions/authActions';
 
 export interface ContextType {
     insertCss: (...styles: any[]) => () => void;
-    store: {
-        subscribe: Function;
-        dispatch: Function;
-        getState: Function;
-    };
+    store: EnhancedStore;
 }
 
 /**
@@ -68,9 +66,11 @@ function App({ context, children }: Props) {
     }, [context.store]);
 
     return (
-        <Provider store={context.store}>
-            <div>{Children.only(children)}</div>
-        </Provider>
+        <StyleContext.Provider value={{ insertCss: context.insertCss }}>
+            <Provider store={context.store}>
+                <div>{Children.only(children)}</div>
+            </Provider>
+        </StyleContext.Provider>
     );
 }
 

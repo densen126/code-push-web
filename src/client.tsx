@@ -2,24 +2,15 @@ import React from 'react';
 import { hydrateRoot, Root } from 'react-dom/client';
 import UniversalRouter from 'universal-router';
 import queryString from 'query-string';
-import { createPath, Action as HistoryAction } from 'history';
+import { createPath, Action as HistoryAction, Location } from 'history';
 import history from './core/history';
-import App from './components/App';
+import App, { ContextType } from './components/App';
 import configureStore from './store/configureStore';
 import { updateMeta } from './core/DOMUtils';
 import { ErrorReporter } from './core/devUtils';
 
-interface ExtendedLocation {
-  pathname: string;
-  search: string;
-  hash: string;
-  key: string;
-  state?: unknown;
-}
 
-type Action = typeof HistoryAction;
-
-const context: any = {
+const context: ContextType = {
     insertCss: (...styles: any[]) => {
         const removeCss = styles.map(x => x._insertCss());
         return () => { removeCss.forEach(f => f()); };
@@ -32,10 +23,10 @@ if ('scrollRestoration' in window.history) {
     window.history.scrollRestoration = 'manual';
 }
 
-let onRenderComplete: (route: any, location: ExtendedLocation) => void = function initialRenderComplete() {
+let onRenderComplete: (route: any, location: Location) => void = function initialRenderComplete() {
     const elem = document.getElementById('css');
     if (elem) elem.parentNode?.removeChild(elem);
-    onRenderComplete = function renderComplete(route: any, location: ExtendedLocation) {
+    onRenderComplete = function renderComplete(route: any, location: Location) {
         document.title = route.title;
         updateMeta('description', route.description);
 
@@ -65,10 +56,10 @@ let onRenderComplete: (route: any, location: ExtendedLocation) => void = functio
 
 const container = document.getElementById('app');
 let root: Root | null = null;
-let currentLocation: ExtendedLocation = history.location;
+let currentLocation: Location = history.location;
 let routes = require('./routes').default;
 
-async function onLocationChange(location: ExtendedLocation, action?: Action) {
+async function onLocationChange(location: Location, action?: HistoryAction) {
     scrollPositionsHistory[currentLocation.key] = {
         scrollX: window.pageXOffset,
         scrollY: window.pageYOffset,
