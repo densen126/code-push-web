@@ -1,112 +1,73 @@
-// start.js
-import path from 'path';
-import fs from 'fs';
-import express from 'express';
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-import BrowserSyncPlugin from 'browser-sync-webpack-plugin';
-import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import webpackConfig from './../config/webpack.config.js';
-import { local_host, port } from './../config/config'
+const path = require('path');
+const express = require('express');
+const webpack = require('webpack');
+const nodeExternals = require('webpack-node-externals');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const { merge } = require('webpack-merge');
 
+// 加载客户端和公共配置
+const clientConfig = require('./../config/webpack.dev.js');
+const commonConfig = require('./../config/webpack.common.js');
 
-let server;
-let isServerStarted = false;
-const [clientConfig, serverConfig] = webpackConfig;
-const serverPath = path.join(serverConfig.output.path, serverConfig.output.filename);
-
-clientConfig.entry = [
-    'webpack-hot-middleware/client?reload=true&timeout=3000',
-    ...[].concat(clientConfig.entry).filter(Boolean),
-];
-
-const babelRule = clientConfig.module.rules.find(
-    (rule) => rule.loader === 'babel-loader'
-);
-
-if (babelRule) {
-    babelRule.options = babelRule.options || {};
-    babelRule.options.plugins = [
-        'react-refresh/babel',
-        ...(babelRule.options.plugins || []),
-    ];
-}
-
-// 添加 HMR 插件
-clientConfig.plugins = [];
-clientConfig.plugins.push(new BrowserSyncPlugin({
-    host: local_host,
-    port: port,
-    proxy: `http://${local_host}:${port}`,
-    files: ['build/**/*.*'],
-    open: true,
-}));
-clientConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
-clientConfig.plugins.push(new ReactRefreshWebpackPlugin({ overlay: false }));
-
-const clientCompiler = webpack(clientConfig);
-const serverCompiler = webpack(serverConfig);
-
-async function createApp() {
-    const app = express();
-
-    app.use(
-        webpackDevMiddleware(clientCompiler, {
-            publicPath: clientConfig.output.publicPath,
-            // writeToDisk: filePath => {
-            //     // 只写入 server 构建结果（例如 server.js）
-            //     return /server\.js$/.test(filePath);
-            // },
-            // stats: clientConfig.stats
-        })
-    );
-    app.use(webpackHotMiddleware(clientCompiler));
-
-    // const mod = await import(serverPath);
-    const mod = require(serverPath);
-    let ssrApp = mod.default || mod;
-
-    app.use((req, res, next) => {
-        if (ssrApp) return ssrApp.handle(req, res, next);
-        return res.status(503).send('Server is starting...');
-    });
-
-    return app;
-}
-
-async function restartServer() {
-    console.log('[server] 🔁 Restarting...');
-
-    if (server) {
-        server.close(async () => {
-            console.log('[server] Closed old server');
-            await startServer(); // 关闭旧的后再重启
-        });
-    } else {
-        await startServer(); // 第一次启动
-    }
-}
-
-async function startServer() {
-    const app = await createApp();
-    server = app.listen(port, () => {
-        console.log(`[server] Listening on port ${port}`);
-    });
-}
-
-// 监听构建完成后自动重启 Node 服务
-serverCompiler.hooks.done.tap('RestartServerPlugin', async () => {
-    if (isServerStarted) {
-        await restartServer();
-    } else {
-        await startServer();
-    }
+// 动态构建服务端开发配置
+const serverConfig = merge(commonConfig, {
+    mode: 'development',
+    target: 'node',
+    entry: path.resolve(__dirname, '../src/server.tsx'),
+    output: {
+        path: path.resolve(__dirname, '../dist'),
+        filename: 'server.js',
+        libraryTarget: 'commonjs2'
+    },
+    devtool: 'inline-source-map',
+    externals: [nodeExternals()]
 });
 
-// 启动 watch 模式，监听文件变化
-serverCompiler.watch({}, (err) => {
+// 编译并监听服务端代码
+const serverCompiler = webpack(serverConfig);
+let serverRender;
+const serverBundlePath = path.resolve(__dirname, '../dist/server.js');
+serverCompiler.watch({}, (err, stats) => {
     if (err) {
-        console.error('[server] 编译失败:', err);
+        console.error(err);
+        return;
     }
+    if (stats.hasErrors()) {
+        console.error(stats.toString({ colors: true, errors: true }));
+        return;
+    }
+    // 热重载服务端渲染函数
+    delete require.cache[serverBundlePath];
+    serverRender = require(serverBundlePath).default || require(serverBundlePath);
+    console.log('Server bundle rebuilt');
+});
+
+// 创建 Express 实例
+const app = express();
+// 客户端 HMR
+const clientCompiler = webpack(clientConfig);
+app.use(
+    webpackDevMiddleware(clientCompiler, {
+        publicPath: clientConfig.output.publicPath,
+        stats: 'minimal'
+    })
+);
+app.use(webpackHotMiddleware(clientCompiler));
+
+// 静态资源
+app.use(express.static(path.resolve(__dirname, '../public')));
+
+// SSR 处理
+app.get('*', (req, res, next) => {
+    if (!serverRender) {
+        return res.send('Compiling server... Please refresh shortly.');
+    }
+    serverRender(req, res, next);
+});
+
+// 启动服务
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Dev server running at http://localhost:${PORT}`);
 });

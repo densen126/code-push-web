@@ -1,140 +1,79 @@
-import path from 'path';
+// src/server.tsx
 import express from 'express';
-import type { Request, Response, NextFunction } from 'express';
-import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
-import {
-    renderToString,
-    renderToStaticMarkup,
-    renderToPipeableStream,
-} from 'react-dom/server';
-import UniversalRouter from 'universal-router';
-import PrettyError from 'pretty-error';
-import App, { ContextType } from './components/App';
+import path from 'path';
+import fs from 'fs';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import { Provider } from 'react-redux';
+import App from './components/App';
 import Html from './components/Html';
-import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
-import errorPageStyle from './routes/error/ErrorPage.css';
-import routes from './routes';
-import assets from './../assets.json';
-import configureStore from './store/configureStore';
-import { port } from './config';
+import { createStore } from './store';
+import { router } from './router';
 
 const app = express();
+const isProd = process.env.NODE_ENV === 'production';
+const staticDir = path.resolve(__dirname, isProd ? 'public' : '../public');
 
-//
-// Tell any CSS tooling (such as Material UI) to use all vendor prefixes if the
-// user agent is not known.
-// -----------------------------------------------------------------------------
-if (typeof navigator === 'undefined') {
-    (global as any).navigator = { userAgent: 'all' };
-} else if (!navigator.userAgent) {
-    (navigator as any).userAgent = 'all';
-}
+// 服务端渲染时暴露静态资源
+app.use(express.static(staticDir));
 
-//
-// Register Node.js middleware
-// -----------------------------------------------------------------------------
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-if (__DEV__) {
-    app.enable('trust proxy');
-}
-
-//
-// Register server-side rendering middleware
-// -----------------------------------------------------------------------------
-app.use(async (req, res, next) => {
+app.get('*', async (req, res) => {
     try {
-        const store = configureStore({}, { cookie: req.headers.cookie });
+        // 1. 创建 Redux store
+        const store = createStore();
 
-        const css = new Set();
+        // 2. 路由匹配
+        const context = await router.resolve({ pathname: req.path });
 
-        // Global (context) variables that can be easily accessed from any React component
-        // https://facebook.github.io/react/docs/context.html
-        const context: ContextType = {
-            // Enables critical path CSS rendering
-            // https://github.com/kriasoft/isomorphic-style-loader
-            insertCss: (...styles: any[]) => {
-                const removeCss = styles.map(style => style._insertCss());
-                return () => {
-                    removeCss.forEach(dispose => dispose());
-                };
-            },
-            // Initialize a new Redux store
-            // http://redux.js.org/docs/basics/UsageWithReact.html
-            store,
-        };
+        // 3. 渲染 App
+        const appHtml = renderToString(
+            <Provider store={store}>
+                <App context={context} />
+            </Provider>
+        );
 
-        const router = new UniversalRouter(routes, {context: context});
-        const route = await router.resolve({
-            pathname: req.path,
-            query: req.query,
-        });
+        // 4. 拿到初始 state
+        const preloadedState = store.getState();
 
-        if (route.redirect) {
-            res.redirect(route.status || 302, route.redirect);
-            return;
+        // 5. 确定要注入的脚本和样式
+        let scripts: string[] = [];
+        let styles: string[] = [];
+
+        if (isProd) {
+            const mfPath = path.resolve(staticDir, 'manifest.json');
+            const manifest = JSON.parse(fs.readFileSync(mfPath, 'utf-8'));
+            for (const key in manifest) {
+                const asset = manifest[key];
+                if (key.endsWith('.js')) scripts.push('/' + asset);
+                if (key.endsWith('.css')) styles.push('/' + asset);
+            }
+        } else {
+            // 开发模式下输出 main.js
+            scripts.push('/static/js/main.js');
         }
 
-        const data = { ...route };
-        data.children = renderToString(<App context={context}>{route.component}</App>);
-        data.styles = [
-            { id: 'css', cssText: [...css].join('') },
-        ];
-        data.scripts = [
-            assets.vendor.js,
-            assets.client.js,
-        ];
-        data.state = context.store.getState();
-        if (assets[route.chunk]) {
-            data.scripts.push(assets[route.chunk].js);
-        }
+        // 6. 装入 Html 模板
+        const html = '<!DOCTYPE html>' +
+            renderToString(
+                <Html
+                    title={context.title}
+                    state={preloadedState}
+                    routeContext={context}
+                    scripts={scripts}
+                    styles={styles}
+                >
+                    <div id="root" dangerouslySetInnerHTML={{ __html: appHtml }} />
+                </Html>
+            );
 
-        const stream = renderToPipeableStream(<Html {...data} />, {
-            onAllReady() {
-                res.status(route.status || 200);
-                res.setHeader('Content-Type', 'text/html');
-                res.write('<!doctype html>');
-                stream.pipe(res);
-            },
-            onError(err) {
-                next(err);
-            },
-        });
-        return;
+        res.send(html);
     } catch (err) {
-        next(err);
+        console.error(err);
+        res.status(500).send('服务器内部错误');
     }
 });
 
-//
-// Error handling
-// -----------------------------------------------------------------------------
-const pe = new PrettyError();
-pe.skipNodeFiles();
-pe.skipPackage('express');
-
-app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    console.log(pe.render(err));
-    const html = renderToStaticMarkup(
-        <Html
-            title="Internal Server Error"
-            description={err.message}
-            styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]}
-        >
-            {renderToString(<ErrorPageWithoutStyle error={err} />)}
-        </Html>
-    );
-    res.status(err.status || 500);
-    res.send(`<!doctype html>${html}`);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server listening on http://localhost:${port}`);
 });
-
-//
-// Export the app so external scripts can start the server
-// -----------------------------------------------------------------------------
-
-export default app;
-

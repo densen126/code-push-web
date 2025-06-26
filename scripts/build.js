@@ -1,35 +1,27 @@
-import webpack from 'webpack';
-import webpackConfig from '../config/webpack.config.js';
-import run from './run.js';
+const path = require('path');
+const webpack = require('webpack');
 
-async function build() {
-    // fs.rmSync(path.resolve('build'), { recursive: true, force: true });
+// 生产配置支持数组：clientConfig + serverConfig
+const configs = require('./../config/webpack.prod.js');
 
-    const compiler = webpack(webpackConfig);
-
-    return new Promise((resolve, reject) => {
-        compiler.run((err, stats) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            console.log(stats.toString(webpackConfig[0].stats));
-            compiler.close((closeErr) => {
-                if (closeErr) {
-                    reject(closeErr);
-                    return;
-                }
-                resolve();
-            });
-        });
-    });
-}
-
-export default build;
-
-if (require.main === module) {
-    run(build).catch((err) => {
+const compiler = webpack(configs);
+compiler.run((err, stats) => {
+    if (err) {
         console.error(err);
         process.exit(1);
-    });
-}
+    }
+    console.log(
+        stats.toString({
+            colors: true,
+            modules: false,
+            children: false,
+            chunks: false,
+            chunkModules: false
+        })
+    );
+    if (stats.hasErrors()) {
+        console.error('Build failed with errors');
+        process.exit(1);
+    }
+    console.log('Build completed successfully');
+});

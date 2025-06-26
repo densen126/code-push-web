@@ -1,6 +1,0 @@
-{
-  "private": true,
-  "name": "redux-logger-middleware",
-  "main": "./logger.server.ts",
-  "browser": "./logger.client.ts"
-}
