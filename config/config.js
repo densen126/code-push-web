@@ -1,3 +1,16 @@
-export const port = 3000;
-export const server_port = 2999;
-export const local_host = "localhost";
+const path = require('path');
+const projectRoot = process.cwd();
+
+exports.paths = {
+    projectRoot,
+    src: path.resolve(projectRoot, 'src'),
+    dist: path.resolve(projectRoot, 'dist'),
+    distPublic: path.resolve(projectRoot, 'dist/public'),
+    publicPath: '/public/'
+};
+
+
+exports.serverconfig = {
+    local_host: "localhost",
+    port: 3000
+}

@@ -1,78 +1,59 @@
-import express from 'express';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import App from './components/App';
-import Html from './components/Html';
-import routes from 'routes';
-
-const app = express();
-const port = 3000;
-
-app.use('/public', express.static('build/public'));
-
-app.get('/', (req, res) => {
-    const path = req.path;
-    const content = ReactDOMServer.renderToString(<App currentPath={path} />);
-    const html = ReactDOMServer.renderToStaticMarkup(
-        // <Html>
-        //   <div id="root" dangerouslySetInnerHTML={{ __html: content }} />
-        // </Html>
-        <Html title={'Untitled'} currentPath={path}>
-            {content}
-        </Html>
-    );
-    res.send('<!doctype html>' + html);
-});
-
-export default app;
+import "./styles/tailwind.css";
+import path from 'path';
+import fs from 'fs';
+import { renderToString } from 'react-dom/server';
+import App from './App';
+import Html from './Html';
+import { Provider } from 'react-redux';
+import { createStore } from './store';
+import router from './routes';
+import { createContext } from './routes/context';
+import type { RouContext, RouteRes } from './routes/types';
 
 
-// import express from 'express';
-// import React from 'react';
-// import ReactDOMServer from 'react-dom/server';
+export default async (req: any, res: any, next: any) => {
+    try {
+        // 1. 生成本次请求的上下文
+        const ctx: RouContext = createContext(req.path);
 
-// import App from 'components/App';
-// import Html from 'components/Html';
-// import routes from 'routes';
+        // 2. 可选：解析 user、token、locale 等再挂到 ctx 上
+        ctx.user = {
+            id: "xxx",
+            roles: ["lark"]
+        };
 
-// import { local_host, server_port } from './../config/config';
+        // 3. 路由匹配，获得渲染数据
+        const routeResult = await router.resolve(ctx);
 
-// const app = express();
+        // 4. 用 initialData 创建 Redux store
+        const store = createStore(routeResult?.initialData);
+        
+        const preloadedState = store.getState();
+        const data = {
+            title: routeResult?.title,
+            user: ctx.user,
+            preloadedState: preloadedState,
+            message: '这是从服务端渲染的消息…'
+        };
+        
+        const appHtml = renderToString(
+            <Provider store={store}>
+                <App component={routeResult?.component} />
+            </Provider>
+        );
 
-// // 静态资源目录
-// // app.use(express.static(path.resolve(__dirname, 'public')));
+        // 5. 读取 assets.json 注入前端脚本
+        let scripts = ['/public/bundle.js'];
+        if (process.env.NODE_ENV === 'production') {
+            const manifestPath = path.resolve(__dirname, './public/assets.json');
+            const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+            scripts = manifest.entrypoints.bundle.assets.js;
+        }
 
-// app.get('/', async (req, res) => {
-//     try {
-//         // 根据路径找对应路由，没有则用 NotFound
-//         const route = routes.find(r => r.path === req.path) || routes.find(r => r.path === '*');
-
-//         // 渲染对应组件内容
-//         // const content = ReactDOMServer.renderToString(
-//         //     <App>
-//         //         {route?.component ? React.createElement(route.component) : null}
-//         //     </App>
-//         // );
-
-//         const html = ReactDOMServer.renderToStaticMarkup(
-//             <Html title={route?.title || 'Untitled'}>
-//                 <App>
-//                     {route?.component ? React.createElement(route.component) : null}
-//                 </App>
-//             </Html>
-//         );
-
-
-//         // 流式渲染 React 组件，逐步向客户端发送 HTML
-//         // ReactDOMServer.renderToPipeableStream
-//         console.log(`${html}`)
-//         res.status(route?.status || 200).send(`${html}`);
-//     } catch (error) {
-//         console.error('SSR error:', error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// });
-
-// app.listen(server_port, () => {
-//     console.log(`Dev server listening on http://${local_host}:${server_port}`);
-// });
+        // 6. 输出完整 HTML
+        const fullHtml = renderToString(<Html content={appHtml} data={data} scripts={scripts} />);
+        res.send(`<!DOCTYPE html>${fullHtml}`);
+    } catch (error) {
+        next(error);
+    }
+};

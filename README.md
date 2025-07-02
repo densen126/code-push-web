@@ -11,6 +11,8 @@
 
 - React 18
 - Redux + Redux Thunk（使用 @reduxjs/toolkit 简化）
+- Universal Router
+- Tailwind CSS
 - TypeScript
 - Webpack 5
 - Babel 7
@@ -51,6 +53,8 @@ npm start
 
 - `npm start` - 启动开发服务器
 - `npm run build` - 打包生产环境文件（输出至 `dist/` 目录）
+- `npm run lint` - 使用 ESLint 进行代码检查
+- `npm test` - 运行 Vitest 测试
 
 ## ✅ 技术说明
 
