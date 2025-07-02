@@ -1,0 +1,54 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+
+# 输出目录
+dist/
+public/assets/
+*.local
+
+# Webpack 缓存
+.cache/
+.cache-loader/
+webpack-stats.json
+
+# TypeScript
+*.tsbuildinfo
+
+# 日志
+logs/
+*.log
+
+# 临时文件
+*.tmp
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Mac系统文件
+.DS_Store
+
+# Windows
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# 环境变量
+.env
+.env.*
+
+# 包管理相关
+package-lock.json
+
+# Others: 
+# 你的 SSR 静态产物目录（如有特殊自定义）
+dist/

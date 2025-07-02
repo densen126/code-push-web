@@ -1,0 +1,56 @@
+diff a/config/webpack.config.js b/config/webpack.config.js	(rejected hunks)
+@@ -44,51 +44,53 @@ const common = {
+                                 modules: false,
+                                 useBuiltIns: 'entry',
+                                 corejs: 3,
+                             }],
+                             ['@babel/preset-react', { development: isDebug, runtime: 'automatic' }],
+                             '@babel/preset-typescript',
+                         ],
+                     },
+                 },
+             },
+             {
+                 test: /\.css$/,
+                 use: [
+                     'isomorphic-style-loader',
+                     {
+                         loader: 'css-loader',
+                         options: {
+                             importLoaders: 1,
+                             sourceMap: true,
+                             modules: { auto: true, localIdentName: '[name]-[local]-[hash:base64:5]' },
+                         },
+                     },
+                     {
+                         loader: 'postcss-loader',
+                         options: {
+-                            config: './postcss.config.js',
++                            postcssOptions: {
++                                config: path.resolve(__dirname, 'postcss.config.js'),
++                            },
+                         },
+                     }
+                 ],
+             },
+             { test: /\.md$/, loader: path.resolve(__dirname, './../lib/markdown-loader.js') },
+             { test: /\.txt$/, loader: 'raw-loader' },
+             {
+                 test: /\.(ico|jpg|jpeg|png|gif|webp|svg|eot|otf|ttf|woff|woff2)$/i,
+                 type: 'asset/resource',
+                 generator: { filename: '[path][name][ext]?[hash:8]' },
+             },
+             {
+                 test: /\.(mp4|webm|wav|mp3|m4a|aac|oga)$/i,
+                 type: 'asset',
+                 parser: { dataUrlCondition: { maxSize: 10 * 1024 } },
+                 generator: { filename: '[path][name][ext]?[hash:8]' },
+             },
+         ],
+     },
+     bail: !isDebug,
+     cache: isDebug,
+     stats: {
+         colors: true,
+         reasons: isDebug,
+         hash: isVerbose,

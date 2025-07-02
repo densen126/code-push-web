@@ -1,0 +1,53 @@
+diff a/package.json b/package.json	(rejected hunks)
+@@ -6,50 +6,51 @@
+     "scripts": {
+         "dev": "ts-node -r tsconfig-paths/register scripts/dev",
+         "build": "ts-node -r tsconfig-paths/register scripts/build",
+         "start": "ts-node -r tsconfig-paths/register scripts/runServer",
+         "postinstall": "patch-package",
+         "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+         "clean": "npm dedupe"
+     },
+     "engines": {
+         "node": ">=22.0.0",
+         "npm": ">=10.0.0"
+     },
+     "browserslist": [
+         "last 2 Chrome versions",
+         "last 2 Firefox versions",
+         "last 2 Safari versions",
+         "last 2 Edge versions",
+         "last 2 iOS versions"
+     ],
+     "dependencies": {
+         "@reduxjs/toolkit": "2.2.3",
+         "bootstrap": "5.3.3",
+         "browser-sync": "^3.0.4",
+         "core-js": "^3.43.0",
+         "express": "^5.1.0",
++        "normalize.css": "^8.0.1",
+         "react": "18.2.0",
+         "react-bootstrap": "2.10.0",
+         "react-dom": "18.2.0",
+         "react-redux": "9.1.2",
+         "redux": "5.0.1",
+         "redux-thunk": "3.1.0",
+         "regenerator-runtime": "^0.14.1"
+     },
+     "devDependencies": {
+         "@babel/core": "7.24.5",
+         "@babel/node": "^7.27.1",
+         "@babel/preset-env": "7.24.5",
+         "@babel/preset-react": "7.24.1",
+         "@babel/preset-typescript": "^7.27.1",
+         "@pmmmwh/react-refresh-webpack-plugin": "^0.6.0",
+         "@types/express": "^5.0.3",
+         "@types/node": "^24.0.1",
+         "@types/react-dom": "^18.2.0",
+         "@types/webpack-hot-middleware": "^2.25.9",
+         "@typescript-eslint/eslint-plugin": "^8.35.0",
+         "@typescript-eslint/parser": "^8.35.0",
+         "assets-webpack-plugin": "^7.1.1",
+         "autoprefixer": "^10.4.21",
+         "babel-loader": "9.1.3",
+         "babel-plugin-module-resolver": "^5.0.2",
