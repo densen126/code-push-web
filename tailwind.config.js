@@ -13,6 +13,15 @@ module.exports = {
         require("daisyui"),
     ],
     daisyui: {
-        themes: ["light", "dark", "cupcake", "bumblebee"],
+        themes: [
+            "light",       // 亮色
+            "dark",        // 暗色
+            "cupcake",     // 少女粉
+            "synthwave",   // 霓虹炫酷
+            "retro",       // 复古
+            "cyberpunk",   // 赛博朋克
+            "forest",      // 森林绿色
+            "luxury"       // 黑金高端
+        ],
     },
 }

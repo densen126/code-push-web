@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import serialize from 'serialize-javascript';
 
-interface HtmlProps { content: string; data: any; scripts: string[]; }
+interface HtmlProps { content: ReactNode; data: any; scripts: string[]; }
 
 const Html: React.FC<HtmlProps> = ({ content, data, scripts }) => (
     <html>
@@ -17,7 +17,9 @@ const Html: React.FC<HtmlProps> = ({ content, data, scripts }) => (
             />
         </head>
         <body>
-            <div id="root" dangerouslySetInnerHTML={{ __html: content }} />
+            <div id="root">
+                {content}
+            </div>
             {scripts.map(script => <script key={script} src={script} />)}
         </body>
     </html>

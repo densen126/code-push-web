@@ -1,6 +1,5 @@
 import type { RouteContext } from 'universal-router';
 import type { RouteRes, RouContext } from './types';
-import Login from '@/pages/Login';
 
 /**
  * 鉴权：若 ctx.user 不存在，就跳到 /login
@@ -17,10 +16,12 @@ import Login from '@/pages/Login';
 
 export function requireLogin(ctx: RouteContext): RouteRes | undefined {
     if (!ctx.user) {
-        return {
-            title: '请登录',
-            component: <Login />,
-        };
+        ctx.history.replace('/login');
+        return undefined;
+        // return {
+        //     title: '请登录',
+        //     component: <Login />,
+        // };
     }
     return undefined;
 }

@@ -1,5 +1,5 @@
 const path = require('path');
-const { paths: { projectRoot, src } } = require('./config');
+const { paths: { projectRoot, src } } = require('./devconfig');
 const pkg = require(path.resolve(projectRoot, 'package.json'));
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -20,7 +20,7 @@ exports.commonConfig = {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
-        alias: { '@': path.resolve(projectRoot, 'src') }
+        alias: { '@': src }
     }
 };
 

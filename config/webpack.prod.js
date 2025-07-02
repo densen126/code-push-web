@@ -10,7 +10,7 @@ const {
     clientAssetRules,
     serverIgnoreRules
 } = require('./webpack.common.js');
-const { paths: { dist, distPublic, publicPath } } = require('./config');
+const { paths: { dist, distPublic, publicPath } } = require('./devconfig');
 
 const clientConfig = {
     ...commonConfig,

@@ -10,7 +10,8 @@ exports.paths = {
 };
 
 
-exports.serverconfig = {
-    local_host: "localhost",
-    port: 3000
+exports.serverHostPort = {
+    local_host: process.env.WEBSITE_HOSTNAME || "localhost",
+    port: process.env.PORT || 3001
 }
+

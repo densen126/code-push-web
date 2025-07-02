@@ -3,10 +3,11 @@ import UniversalRouter from 'universal-router';
 import type { Route } from 'universal-router';
 import type { RouContext, RouteRes } from './types';
 import { createContext } from './context';
-import homeRoutes from './modules/home';
-import aboutRoutes from './modules/about';
-import usersRoutes from './modules/users';
-import dashboardRoutes from './modules/dashboard';
+import home from './modules/home';
+import about from './modules/about';
+import users from './modules/users';
+import dashboard from './modules/dashboard';
+import login from './modules/login';
 import notFound from './modules/notfound';
 
 const routes: Route<RouteRes, RouContext>[] = [
@@ -18,10 +19,11 @@ const routes: Route<RouteRes, RouContext>[] = [
         //     return ctx.next!();
         // },
         children: [
-            ...homeRoutes,
-            ...aboutRoutes,
-            ...usersRoutes,
-            ...dashboardRoutes,
+            ...login,
+            ...home,
+            ...about,
+            ...users,
+            ...dashboard,
             ...notFound
         ],
     },
@@ -30,3 +32,4 @@ const routes: Route<RouteRes, RouContext>[] = [
 const router = new UniversalRouter<RouteRes, RouContext>(routes);
 
 export default router;
+

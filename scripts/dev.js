@@ -4,6 +4,7 @@ const express = require('express');
 const webpack = require('webpack');
 const devMiddleware = require('webpack-dev-middleware');
 const hotMiddleware = require('webpack-hot-middleware');
+const { serverHostPort: { local_host, port } } = require('./../config/devconfig.js');
 
 // 载入开发环境下的 client 与 server 配置
 const [clientConfig, serverConfig] = require('./../config/webpack.dev.js');
@@ -63,7 +64,6 @@ app.use((req, res, next) => {
     }
 });
 
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`开发服务器启动：http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`开发服务器启动：http://${local_host}:${port}`);
 });

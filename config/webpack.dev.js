@@ -1,8 +1,7 @@
 const webpack = require('webpack');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
-const { paths: { dist, distPublic, publicPath } } = require('./config');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { paths: { dist, distPublic, publicPath } } = require('./devconfig');
 
 const {
     commonConfig,
@@ -10,7 +9,6 @@ const {
     clientAssetRules,
     serverIgnoreRules
 } = require('./webpack.common.js');
-const { plugin } = require('postcss');
 
 const clientConfig = {
     ...commonConfig,
@@ -47,10 +45,7 @@ const clientConfig = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new ReactRefreshWebpackPlugin(),
-        new MiniCssExtractPlugin({
-            filename: "main.css"
-        }),
+        new ReactRefreshWebpackPlugin()
     ],
     devtool: 'cheap-module-source-map'
 };

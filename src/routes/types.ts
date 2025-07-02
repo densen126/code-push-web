@@ -12,6 +12,7 @@ export interface RouteRes {
 
 /** 路由上下文类型，你可以根据需要扩展 */
 export interface RouContext {
+    history: import('history').History;
     /** 当前请求路径 */
     pathname: string;
     /** 路由参数，如动态段 users/:id */
