@@ -23,18 +23,26 @@ export default async (req: any, res: any, next: any) => {
         let ctx: RouContext = createContext(history, req.path);
 
         // 2. 可选：解析 user、token、locale 等再挂到 ctx 上
-        ctx.user = {
-            id: "xxx",
-            roles: ["lark"]
-        };
+        console.log(req.cookies.token, 123412341234)
+        const token = req.cookies.token;
+        token && (ctx.user = {
+            id: "logined",
+            roles: ["logined"]
+        });
 
         // 3. 路由匹配，获得渲染数据
         let routeResult = await router.resolve(ctx);
+        console.log(history.location.pathname, req.url, routeResult);
 
         // 处理跳转逻辑（如果 history.location 变化了，重新 resolve）
-        if (routeResult === null && history.location.pathname !== req.url) {
-            ctx = createContext(history, history.location.pathname);
-            routeResult = await router.resolve(ctx);
+        // 这种方式虽然前端页面会少一次请求直接返回目标页面，但是路径没变，不利于 SEO，而且容易导致用户迷茫，url和内容不一致
+        // if (routeResult === null && history.location.pathname !== req.url) {
+        //     ctx = createContext(history, history.location.pathname);
+        //     routeResult = await router.resolve(ctx);
+        // }
+        if (history.location.pathname !== req.url) {
+            res.redirect(302, history.location.pathname);
+            return;
         }
 
         // 4. 用 initialData 创建 Redux store
@@ -87,6 +95,7 @@ export default async (req: any, res: any, next: any) => {
         setTimeout(() => {
             if (!res.headersSent) res.end();
         }, 15000);
+
     } catch (error) {
         next(error);
     }

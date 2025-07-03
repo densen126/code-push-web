@@ -16,7 +16,7 @@ export interface RouContext {
     /** 当前请求路径 */
     pathname: string;
     /** 路由参数，如动态段 users/:id */
-    params: Record<string, string>;
+    params?: Record<string, string>;
     /** 从 guards 或 action 传递的用户信息 */
     user?: { id: string; roles: string[] };
 }

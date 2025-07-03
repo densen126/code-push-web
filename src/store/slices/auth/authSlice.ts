@@ -21,14 +21,15 @@ const authSlice = createSlice({
             const auth = _.get(action, 'payload');
             if (!_.isEmpty(auth)) {
                 state.isAuth = true;
-                restApi.setAuthToken(['auth', auth]);
+                // restApi.setAuthToken(['auth', auth]);
                 state.token = auth;
             }
             state.isFetching = false;
         },
         saveAuth(state, action) {
+            console.log(action)
             const auth = _.get(action, 'payload');
-            restApi.setAuthToken(['auth', auth]);
+            // restApi.setAuthToken(['auth', auth]);
             sessionStorage.setItem('auth', auth);
             state.token = auth;
             state.isAuth = true;

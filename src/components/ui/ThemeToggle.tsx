@@ -7,7 +7,7 @@ const themes = [
     { name: "cupcake", label: "🧁" },
     { name: "synthwave", label: "🌈" },
     { name: "retro", label: "🎮" },
-    { name: "cyberpunk", label: "🤖" },
+    { name: "valentine", label: "💖" },
     { name: "forest", label: "🌳" },
     { name: "luxury", label: "💎" }
 ];

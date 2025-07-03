@@ -28,7 +28,7 @@ function SettingsMenu() {
             style={{ minHeight: 40 }}
         >
             <a className="tooltip tooltip-right">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" width={20} className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
                     <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                         d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06A1.65 1.65 0 0015.4 19.4a1.65 1.65 0 00-1.51 1V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1.51-1 1.65 1.65 0 00-1.82-.33l-.06.06A2 2 0 013.51 16.88l.06-.06a1.65 1.65 0 00-.33-1.82 1.65 1.65 0 00-1-1.51H3a2 2 0 010-4h.09a1.65 1.65 0 001-1.51 1.65 1.65 0 00.33-1.82l-.06-.06A2 2 0 013.51 7.12l.06.06a1.65 1.65 0 001.82-.33h.09A1.65 1.65 0 007.6 4.6V3a2 2 0 014 0v.09a1.65 1.65 0 001.51 1c.55 0 1.07.22 1.51.6a1.65 1.65 0 001.82.33l.06-.06A2 2 0 0120.49 7.12l-.06.06a1.65 1.65 0 00.33 1.82c.3.36.5.81.6 1.27v.09a2 2 0 010 4h-.09a1.65 1.65 0 00-1 1.51z" />

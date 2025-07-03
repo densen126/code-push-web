@@ -17,7 +17,7 @@ export async function fetchWithTimeout(
     const id = setTimeout(() => controller.abort(), timeout);
 
     try {
-        return await fetch(url, { ...options, signal: controller.signal });
+        return await fetch(url, { ...options, credentials: 'include', signal: controller.signal });
     } finally {
         clearTimeout(id);
     }

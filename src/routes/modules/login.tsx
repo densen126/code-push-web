@@ -7,14 +7,17 @@ const LoginContainer = React.lazy(() => import('@/pages/Login'));
 const loginRoutes: Route<RouteRes, RouContext>[] = [
     {
         path: '/login',
-        action: (): RouteRes => ({
-            title: '登录',
-            component: (
-                <React.Suspense fallback={<div>Loading...</div>}>
-                    <LoginContainer />
-                </React.Suspense>
-            ),
-        }),
+        action: (ctx): RouteRes => {
+            const { history, pathname } = ctx;
+            return {
+                title: '登录',
+                component: (
+                    <React.Suspense fallback={<div>Loading...</div>}>
+                        <LoginContainer context={{ history, pathname }} />
+                    </React.Suspense>
+                ),
+            }
+        },
     },
 ];
 

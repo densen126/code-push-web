@@ -15,7 +15,7 @@ const data = (window as any).__INITIAL_STATE__;
 delete (window as any).__INITIAL_STATE__;
 
 // 2. 初始化 Redux store
-const store = createStore(data.spreloadedState);
+const store = createStore(data.preloadedState);
 
 function render(routeResult: any) {
     hydrateRoot(

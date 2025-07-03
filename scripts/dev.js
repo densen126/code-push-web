@@ -1,6 +1,6 @@
-// scripts/dev.js
 const path = require('path');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const webpack = require('webpack');
 const devMiddleware = require('webpack-dev-middleware');
 const hotMiddleware = require('webpack-hot-middleware');
@@ -10,6 +10,8 @@ const { serverHostPort: { local_host, port } } = require('./../config/devconfig.
 const [clientConfig, serverConfig] = require('./../config/webpack.dev.js');
 
 const app = express();
+
+app.use(cookieParser());
 
 // Client HMR
 const clientCompiler = webpack(clientConfig);

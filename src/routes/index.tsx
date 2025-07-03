@@ -3,12 +3,13 @@ import UniversalRouter from 'universal-router';
 import type { Route } from 'universal-router';
 import type { RouContext, RouteRes } from './types';
 import { createContext } from './context';
-import home from './modules/home';
-import about from './modules/about';
-import users from './modules/users';
-import dashboard from './modules/dashboard';
 import login from './modules/login';
-import notFound from './modules/notfound';
+import register from './modules/register';
+import userSetting from './modules/userSetting';
+import apps from './modules/apps';
+import accessKeys from './modules/accessKeys';
+import document from './modules/document';
+import notFound from './modules/notFound';
 
 const routes: Route<RouteRes, RouContext>[] = [
     {
@@ -20,10 +21,11 @@ const routes: Route<RouteRes, RouContext>[] = [
         // },
         children: [
             ...login,
-            ...home,
-            ...about,
-            ...users,
-            ...dashboard,
+            ...register,
+            ...userSetting,
+            ...apps,
+            ...accessKeys,
+            ...document,
             ...notFound
         ],
     },

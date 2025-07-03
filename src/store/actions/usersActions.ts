@@ -1,5 +1,4 @@
-// src/store/actions/loginActions.ts
-import type { AppDispatch } from '@/store'; // 你的 store 类型
+import type { AppDispatch } from '@/store';
 import restApi from '@/network/restApi';
 import _ from 'lodash';
 import {
@@ -32,7 +31,8 @@ export const logout = () => (dispatch: AppDispatch) => {
 export const fetchLogin = (account: string, password: string) => async (dispatch: AppDispatch) => {
     dispatch(requestLogin());
     const data = await restApi.login(account, password);
-    const auth = _.get(data, 'results.tokens');
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    const auth = _.get(data, 'results.user');
     if (!_.isEmpty(auth)) {
         dispatch(saveAuth(auth));
         dispatch(receiveLogin(data));

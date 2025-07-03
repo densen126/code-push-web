@@ -8,7 +8,7 @@ const Html: React.FC<HtmlProps> = ({ content, data, scripts }) => (
         <head>
             <meta charSet="utf-8" />
             <title>{data.title}</title>
-            <link rel="stylesheet" href="/public/main.css" />
+            {/* <link rel="stylesheet" href="/public/main.css" /> */}
             {/* 将初始数据注入到客户端脚本中 */}
             <script
                 dangerouslySetInnerHTML={{

@@ -6,14 +6,8 @@ import * as userActions from '@/store/actions/usersActions';
 import * as passwordActions from '@/store/slices/users/passwordSlice';
 import * as routesActions from '@/store/actions/routesActions';
 import Login from '@/components/login/Login';
-import type { RouContext } from '@/routes/types';
 
-
-interface LoginPageProps {
-    context: RouContext;
-}
-
-function LoginPage({ context }: LoginPageProps) {
+function Register() {
     // 从 state 里拿数据
     const login = useSelector((state: any) => state.login || {});
     const auth = useSelector((state: any) => state.auth || {});
@@ -45,7 +39,7 @@ function LoginPage({ context }: LoginPageProps) {
     // 登录成功自动跳转
     useEffect(() => {
         if (auth.isAuth) {
-            dispatch(actions.goBackHistory(context.history));
+            // dispatch(actions.goBackHistory());
         }
     }, [auth.isAuth]);
 
@@ -64,4 +58,4 @@ function LoginPage({ context }: LoginPageProps) {
     );
 }
 
-export default LoginPage;
+export default Register;

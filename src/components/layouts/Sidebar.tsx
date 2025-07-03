@@ -22,7 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
                         style={{ cursor: "pointer" }}
                         onClick={onClose}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" width={20} className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path d="M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                             <path d="M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         </svg>
@@ -30,7 +30,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
                 </li>
                 <li>
                     <a className="tooltip tooltip-right" data-tip="应用管理">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" width={20} className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2" />
                             <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2" />
                             <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2" />
@@ -40,7 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
                 </li>
                 <li>
                     <a className="tooltip tooltip-right" data-tip="我的秘钥">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" width={20} className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <circle cx="7.5" cy="15.5" r="4.5" stroke="currentColor" strokeWidth="2" />
                             <path d="M21 2l-9.6 9.6m0 0l-1.4 1.4m1.4-1.4l1.4 1.4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         </svg>
@@ -48,7 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
                 </li>
                 <li>
                     <a className="tooltip tooltip-right" data-tip="用户中心">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" width={20} className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
                             <path d="M4 20c0-4 16-4 16 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         </svg>

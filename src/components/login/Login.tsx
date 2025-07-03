@@ -35,7 +35,8 @@ const Login: React.FC<LoginProps> = ({
                     <label className="form-control w-full mb-2">
                         <span className="label-text mb-1">邮箱地址</span>
                         <input
-                            type="email"
+                            type="text"
+                            name="email"
                             className="input input-bordered w-full"
                             placeholder="请输入邮箱地址"
                             value={account}
@@ -48,6 +49,7 @@ const Login: React.FC<LoginProps> = ({
                         <span className="label-text mb-1">密码</span>
                         <input
                             type="password"
+                            name="password"
                             className="input input-bordered w-full"
                             placeholder="请输入登录密码"
                             value={password}

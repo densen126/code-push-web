@@ -14,14 +14,14 @@ import type { RouteRes, RouContext } from './types';
 //     return null;
 // }
 
-export function requireLogin(ctx: RouteContext): RouteRes | undefined {
+export function requireLogin(ctx: RouteContext): RouteRes | boolean | null {
     if (!ctx.user) {
         ctx.history.replace('/login');
-        return undefined;
+        return true;
         // return {
         //     title: '请登录',
         //     component: <Login />,
         // };
     }
-    return undefined;
+    return false;
 }
